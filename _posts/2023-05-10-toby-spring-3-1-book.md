@@ -1,8 +1,8 @@
 ---
-title: Text and Typography
-author: cotes
-date: 2019-08-08 11:33:00 +0800
-categories: [Blogging, Demo]
+title: 1장 오브젝트와 의존관계
+author: park
+date: 2023-05-10 19:41:00 +0800
+categories: [Java, 토비의 스프링(2022-10  2023-01)]
 tags: [typography]
 math: true
 mermaid: true
@@ -36,6 +36,7 @@ Quisque egestas convallis ipsum, ut sollicitudin risus tincidunt a. Maecenas int
 1. Firstly
 2. Secondly
 3. Thirdly
+4. Fourth
 
 ### Unordered list
 
