@@ -1,0 +1,21 @@
+☆ 하이퍼링크 사용법
+ex)
+[**Chirpy**](https://github.com/cotes2020/jekyll-theme-chirpy/fork)
+
+☆ 이미지 업로드 방법
+01. 캡처 도구를 이용하여 원하는 이미지를 캡처한다.
+02. 캡처된 이미지를 ctrl + c (복사) 한다.
+03. github repository 중, 깃 블로그 repository에서 issues 탭의 textarea에 붙여 넣는다.
+    ㄴ https://github.com/4862abd/4862abd.github.io/issues/new
+04. 곧 변환된 이미지의 코드가 나올 것이다.
+05. 포스트에 붙여넣자.
+ex) 
+![image](https://github.com/4862abd/4862abd.github.io/assets/77370682/ce261bb4-c073-43f4-a3df-9b4411144ad4)
+
+☆ 콜아웃 사용법
+강조하려는 문장 앞에 > 붙여서 사용
+
+☆ 파랑색 콜아웃 사용법
+콜아웃 하단에 적기
+{: .prompt-info }
+
