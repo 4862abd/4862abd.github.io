@@ -1,4 +1,5 @@
 # The Site Configuration
+future: true  # 포스팅 개시할 때, 바로 반영되는 옵션
 
 # Import the theme
 theme: jekyll-theme-chirpy
