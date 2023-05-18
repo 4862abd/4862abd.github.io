@@ -84,7 +84,7 @@ theme_mode: # [light|dark]
 img_cdn: "https://chirpy-img.netlify.app"   # 이미지
 
 # the avatar on sidebar, support local or CORS resources
-avatar: "![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/f311df4c-7efe-4e80-ab7f-3806f0bc2760)"
+avatar: "assets/img/main/avatar.jpg"
 
 # boolean type, the global switch for TOC in posts.
 toc: true
