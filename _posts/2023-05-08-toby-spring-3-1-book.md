@@ -1,7 +1,7 @@
 ---
 title: 1장 오브젝트와 의존관계
 author: park
-date: 2023-05-10 19:41:00 +0800
+date: 2023-05-08 19:41:00 +0800
 categories: [Java, 토비의 스프링(2022-10  2023-01)]
 tags: [typography]
 math: true
