@@ -1,0 +1,168 @@
+여태까지 로컬에서 실행하기, Git 과 연동해서 Repository에 commit 하기 까지 마무리 했다.
+
+이제 남은 것은 Github의 액션을 통해서 자동으로 배포, 관리되는 과정이다.
+우리가 이름을 바꾼 pages-deply.yml은 우리의 블로그 소스가 자동으로 배포 해줄 수 있게 도와주는 설정을 하는 파일이다.
+
+하지만 문제가 생겼다.
+Github에 등록한 gmail로 배포가 실패했다는 메일이 날라온 것.
+
+내용을 확인하면
+Build & Deploy, 즉 빌드, 배포에 실패했다고 나온다.
+
+> 이 에러를 고쳐가는 과정에 대한 블로그 포스팅이 적지 않다.
+하지만, 현재 windows 에서 세팅해서 이러한 과정을 확실하게 정리한 사람은 단 한명도 없었다.
+대부분 Linux나 MacOS 환경에서 세팅하더라.
+그래서 나는 이 과정을 chirpy theme 의 Github 탭 중 Issues(질문 등을 등록하는 페이지) 와 다른 여러 포스팅, 
+Github의 자동 배포 관련 doc문서, js 파일 컴파일 하는 doc 문서들까지
+전부 섭렵하고 나서..
+아무런 도움을 얻지 못했다.
+ㅋㅋㅋㅋㅋ
+
+그래서 나와 같은 에러를 겪을 사람들을 위해서 이 글을 포스팅한다.
+
+우선 _config.yml 파일의 url에 등록했던
+본인 아이디.github.io
+로 접속해본다.
+
+* 사진
+404가 발생한다.
+commit을 진행하면 그 이후 Github에 가입한 본인 이메일로 사유가 날아온다.
+
+* 사진
+사진을 보면 59초에 걸쳐 진행했지만 실패했다고 나온다.
+실패한 과정은 build 과정.
+x 표시가 떠있는 build를 클릭하면 build의 과정을 확인할 수 있는데,
+
+> 에러 코드
+Run bundle exec htmlproofer _site --disable-external --check-html --allow_hash_href
+Running ["ScriptCheck", "LinkCheck", "ImageCheck", "HtmlCheck"] on ["_site"] on *.html... 
+
+
+Ran on 23 files!
+
+
+- _site/404.html
+  *  internal script /assets/js/dist/page.min.js does not exist (line 1)
+- _site/about/index.html
+  *  internal script /assets/js/dist/page.min.js does not exist (line 1)
+- _site/archives/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/categories/blogging/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/categories/demo/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/categories/index.html
+  *  internal script /assets/js/dist/categories.min.js does not exist (line 1)
+- _site/categories/tutorial/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/index.html
+  *  internal script /assets/js/dist/home.min.js does not exist (line 1)
+- _site/posts/customize-the-favicon/index.html
+  *  internal script /assets/js/dist/post.min.js does not exist (line 1)
+- _site/posts/enable-google-pv/index.html
+  *  internal script /assets/js/dist/post.min.js does not exist (line 155)
+- _site/posts/getting-started/index.html
+  *  internal script /assets/js/dist/post.min.js does not exist (line 29)
+- _site/posts/text-and-typography/index.html
+  *  internal script /assets/js/dist/post.min.js does not exist (line 22)
+- _site/posts/write-a-new-post/index.html
+  *  internal script /assets/js/dist/post.min.js does not exist (line 183)
+- _site/tags/favicon/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/tags/getting-started/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/tags/google-analytics/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/tags/index.html
+  *  internal script /assets/js/dist/commons.min.js does not exist (line 1)
+- _site/tags/pageviews/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/tags/typography/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/tags/writing/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+
+HTML-Proofer found 20 failures!
+Error: Process completed with exit code 1.
+
+
+* 사진
+"Error: Process completed with exit code 1." 코드를 뱉어내며 Test site 라는 과정에서 문제가 발생했다.
+토글을 열고 확인하면,
+
+* 사진
+/assets/js/dist 경로에서
+page.min.js
+misc.min.js
+categories.min.js
+home.min.js
+post.min.js
+commons.min.js
+이런 js 파일들을 찾지 못한다고 한다.
+
+처음에는 이 에러를 잡으려고 엄청 노력했다.
+> 1. js 파일을 직접 /assets/js/dist 폴더에 넣기 - 실패
+해당 파일들은 _javascript 폴더 안에 존재하는데 배포 과정에서는 /assets/js/dist 에서 찾으려고 한다.
+그래서 찾아보니 js 파일이 컴파일 되면서 dist 에 들어가게 되는데(npm 을 사용하는 node의 특성 상, build 후 파일들이 dist에 저장된다.)
+이 과정을 제대로 진행하지 못 한다는 것.
+* 사진
+(실제로 dist 폴더는 존재하지도 않는다.)
+그래서 임의로 dist 폴더를 생성해서 넣으려다가
+그런 과정을 정리한 사람을 찾지도 못 했고, 이러한 과정을 거치면 그게 어떻게 자동 배포인가, 하드코딩이지.
+포기 - 실패
+
+> 2. _javascript 폴더를 root 경로에 추가하기 - 실패
+해당 파일이 빌드되지 못해서 dist 폴더에 생성되지 않는다면 _javascript 폴더 자체를 루트 경로에 추가하면 되지 않을까 싶었다.
+확인해보니 _config.yml 에 _javascript 경로를 추가할 수 있는 방법이 있다.
+_config.yml 상단에
+include:
+	- _javascript
+를 추가하는 방법 - 실패
+출처: https://velog.io/@lzlko/github-%EB%B8%94%EB%A1%9C%EA%B7%B8
+
+> 3. npm i && npm run build 를 통해 직접 빌드하기
+출처: https://github.com/cotes2020/jekyll-theme-chirpy/issues/1007
+npm i 는 되지만 npm run build 시 실패한다. NODE_ENV=production 이라는 설정을 npm에서는 명령어로 받아들이려 한다는 점.
+그래서 build 자체에 에러가 나고, 빌드 환경 설정을 짜려고 하면 이미 겉잡을 수 없이 작업의 방향이 엇나갈 가능성이 있다.
+출처: https://github.com/cotes2020/jekyll-theme-chirpy/issues/1007
+실패
+
+> 4. 자동 배포의 빌드가 실패하고 로컬은 성공하니 로컬 환경으로 빌드된 파일을 직접 커밋하기
+우리가 포스팅 한 글은 _posts 폴더에 등록하여 빌드 시, _site 폴더에 만들어 지는데 이를 직접 커밋하려 했다.
+하지만 .gitignore 에 
+_site
+가 추가되어 있어서
+해당 부분에서 포스팅 관련 html을 담고 있는 _site/posts 를 .gitignore 에서 제외하고 반영하려 했지만
+이것도 사실상 하드코딩이 될 가능성이 높아서 포기 - 실패
+.gitignore 제외하기 - 출처: https://nochoco-lee.tistory.com/48
+
+
+이외에도 여러 과정을 거쳐서 스스로 방법을 찾아냈다.
+에러가 나는 과정은 Test site 빌드 시 실패한다는 점.
+그리고 Test site 에대한 설정은 pages-deploy.yml 에 포함되어 있다.
+
+※ 그것만 제외해보자.
+
+* 사진
+
+오, commit & push 이후에 아무리 기다려도 실패했다는 이메일이 오지 않는다.
+그렇다면 해당 Repository의 Action 탭에 들어가서 확인하자.
+
+* 사진
+2분 전에 내가 커밋한 내역이 정상적으로 반영되었다고 한다.
+와.. 드디어...
+내가 커밋한 메세지를 클릭해서 build 과정을 확인하면 
+* 사진
+* 사진
+
+build 과정에서 문제가 발생했던 Test site 과정을 빼고 진행한 것을 알 수 있다.
+
+그렇다면..
+본인 아이디.github.io
+로 접속해서 정상적으로 배포가 된 것인지 확인하자..!
+
+* 사진
+짜잔!
+어느정도 기다리면 배포를 마친 나만의 사이트가 완성된다!
+
+이로써 에러 해결!
