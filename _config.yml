@@ -81,10 +81,12 @@ theme_mode: # [light|dark]
 # will be added to all image (site avatar & posts' images) paths starting with '/'
 #
 # e.g. 'https://cdn.com'
-img_cdn: "https://chirpy-img.netlify.app"   # 이미지
+# img_cdn: "https://chirpy-img.netlify.app"   # default 이미지 경로
+img_cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar: "/commons/avatar.jpg"
+# avatar: "/commons/avatar.jpg"               # default avatar
+avatar: "/assets/img/main/avatar.png"   # 이미지
 
 # boolean type, the global switch for TOC in posts.
 toc: true
