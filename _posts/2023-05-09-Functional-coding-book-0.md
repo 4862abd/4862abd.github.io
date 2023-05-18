@@ -8,7 +8,7 @@ math: true
 mermaid: true
 ---
 
-![image](https://github.com/4862abd/4862abd.github.io/assets/77370682/ce261bb4-c073-43f4-a3df-9b4411144ad4)
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/25f9604c-29c7-4858-af75-82d6da2653c7)
 
 ---
 ## 처음 이 책을 접하며
