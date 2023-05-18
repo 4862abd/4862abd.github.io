@@ -44,7 +44,10 @@ mermaid: true
 <br/>
 
 <!-- 물음표 개구리 -->
-![image](https://github.com/4862abd/4862abd.github.io/assets/77370682/6756a5be-f9f0-439d-9770-5415e9db5ca7)
+<!-- 로컬 -->
+<!-- ![image](https://github.com/4862abd/4862abd.github.io/assets/77370682/6756a5be-f9f0-439d-9770-5415e9db5ca7) -->
+<!-- 배포 -->
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/33eaa006-df45-4a73-bbdd-ca385281b0d5)
 <br/>
 <br/>
 <b>하지만 이상하다.</b><br/>

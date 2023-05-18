@@ -94,7 +94,11 @@ mermaid: true
 
 ### ● 계층화 설계 맛보기
 
-![image](https://github.com/4862abd/4862abd.github.io/assets/77370682/9eb488dd-b612-42d4-93f9-9e0b8a4f4f0e)
+<!-- 계층형 설계 -->
+<!-- 로컬 -->
+<!-- ![image](https://github.com/4862abd/4862abd.github.io/assets/77370682/9eb488dd-b612-42d4-93f9-9e0b8a4f4f0e) -->
+<!-- 배포 -->
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/de72a2b6-ede8-4b0f-893b-5e755d0c195b)
 
 <br/>
 위 사진의 각 계층은 그 아래의 계층을 기반으로 만들어 진다.<br/>
@@ -152,7 +156,11 @@ mermaid: true
 
 ### ● 파트 2: 일급 추상
 
-![image](https://github.com/4862abd/4862abd.github.io/assets/77370682/edbb0f90-2c31-45ca-b74d-dbd09ef7bd51)
+<!-- 피자 만들기 타임라인 다이어그램 -->
+<!-- 로컬 -->
+<!-- ![image](https://github.com/4862abd/4862abd.github.io/assets/77370682/edbb0f90-2c31-45ca-b74d-dbd09ef7bd51) -->
+<!-- 배포 -->
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/32e63e88-5a48-40fd-b024-9333e6605b3c)
 <br/>
 
 <br/>
