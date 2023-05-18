@@ -29,7 +29,7 @@ mermaid: true
 
 ### ● 함수형 프로그래밍은 무엇인가요?
 
-사전적 의미의 함수형 프로그래밍(Functional Programming, FP, 명사)을 설명한다고 한다.<br/>
+사전적 의미의 함수형 프로그래밍(Functional Programming, FP, 명사)을 설명한다고 한다. <br/>
 1. 수학 함수를 사용하고 부수 효과(Side Effect)를 피하는 것이 특징인 프로그래밍 패러다임
 2. 부수 효과 없이 순수 함수(Pure Function)만 사용하는 프로그래밍 스타일
 
