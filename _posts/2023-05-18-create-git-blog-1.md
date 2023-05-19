@@ -100,7 +100,7 @@ Fork로 진행하는 방법도 굉장히 유용하지만, 한 계정 당 같은 
 ---
 <br/>
 
-### ● 시작
+## ● 시작
 <br/>
 
 #### 1. Repository 생성, Git 연결
@@ -114,7 +114,7 @@ Fork로 진행하는 방법도 굉장히 유용하지만, 한 계정 당 같은 
 > 그리고 공개 타입을 <b>Public</b>으로 설정해야한다.<br/>
 {: .prompt-tip }
 
-
+---
 <br/>
 
 <!-- Git bash 실행 -->
@@ -124,7 +124,7 @@ Fork로 진행하는 방법도 굉장히 유용하지만, 한 계정 당 같은 
 > 1 - 2. 그리고 블로그의 소스를 관리할 폴더를 하나 만들어서 <b>Git bash</b>를 실행한다.<br/>
 {: .prompt-tip }
 
-
+---
 <br/>
 
 <!-- GitHub Id, Email 등록 -->
@@ -142,11 +142,11 @@ git config --global user.email 유저 이메일
 
 <br/>
 
-> 1 - 3. 우선 global 옵션으로 본인의 GitHub 아이디와 이메일을 등록합니다.<br/>
+> 1 - 3. 우선 global 옵션으로 본인의 GitHub 아이디와 이메일을 등록한다.<br/>
 > global로 지정하지 않으면 추후 Git 작업을 할 때마다 등록을 해야할 수 있다.<br/>
 {: .prompt-tip }
 
-
+---
 <br/>
 
 <!-- Git bash 실행 -->
@@ -158,15 +158,155 @@ git config --global user.email 유저 이메일
 ```bash
 ---
 git clone https://github.com/유저 아이디/유저 아이디.github.io.git
+exit
 ---
 ```
 
-> 그 후, 아까 새로 생성한 Repository의 url을 이용해서 아까 만든 빈 폴더에 git clone을 해준다.<br/>
-> 정상적으로 clone이 되었다면 exit 명령어를 통해 bash를 종료합니다.<br/>
+> 1 - 4. 그 후, 아까 새로 생성한 Repository의 url을 이용해서 아까 만든 빈 폴더에 git clone을 해준다.<br/>
+> 정상적으로 clone이 되었다면 exit 명령어를 통해 bash를 종료한다.<br/>
 {: .prompt-tip }
 
+---
+<br/>
+
+#### 2. 초기 설정, Git commit & push
+
+<!-- .git 폴더 확인 -->
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/825a0639-c981-4ba0-9655-a2321daed3e6)
+<br/>
+<br/>
+
+> 2 - 1. 위의 과정을 거치면 <b>본인 아이디.github.io 의 이름을 가진 현재 폴더</b>에 아무 변화도 없어 보인다.<br/>
+> 하지만 숨김 파일 보기 설정을 키는 순간 .git 폴더가 생긴 것을 확인할 수 있다.<br/>
+{: .prompt-tip }
+
+---
+<br/>
+
+<!-- 압축 해제 파일 붙여넣기 -->
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/f9a22a07-8250-4919-963c-8c0488dddfce)
+<br/>
+<br/>
+
+```bash
+---
+git clone https://github.com/유저 아이디/유저 아이디.github.io.git
+exit
+---
+```
+
+> 2 - 2. 이제 아까 압축을 풀었던 jekyll-theme-chirpy-master.zip 폴더 안의 파일과 폴더들을<br/>
+> .git 폴더가 있는 본인 아이디.github.io 폴더 안에 복사 붙여넣기 하자.<br/>
+> 그러면 .git이라는 폴더가 같이 있는 블로그 소스의 폴더가 완성된다.<br/>
+{: .prompt-tip }
+
+---
+<br/>
+
+<!-- git add . -->
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/6070eb5c-c381-4433-ad51-af7a9b9727ff)
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/41488b8a-60c3-45ac-9916-104f9bb45eb5)
+<br/>
+<br/>
+
+```bash
+---
+git add .
+---
+```
+
+> 2 - 3. 이제 해당 폴더 내의 파일들을 Git에 commit & push 할 차례이다.<br/>
+> git bash를 다시 실행하자.<br/>
+> 그 후, bash 에<br/>
+> <b>git add .</b><br/>
+> 를 입력한다.<br/>
+> 우리는 이미 Git 의 연동에 대한 정보를 가지고 있으므로 바로 commit & push를 진행할 수 있는 상태이다.<br/>
+> git add . 가 완료되면 사진과 같은 로그가 쭉 남는다.<br/>
+{: .prompt-tip }
+
+---
+<br/>
+
+<!-- git status -->
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/b3db959e-7d28-48f1-85ca-71b01da5941e)
+<br/>
+<br/>
+
+```bash
+---
+git status
+---
+```
+
+> 2 - 4. git add .를 통해 파일과 폴더들이 commit이 될 준비를 마쳤으니<br/>
+> <b>git status</b><br/>
+> 를 입력해서 파일들이 초록색으로 변한 것을 확인한다.<br/>
+> 초록색으로 표시되는 폴더, 파일은 정상적으로 대기 상태에 올랐다는 것을 확인한다.<br/>
+> 만약 빨간색으로 표시가 된다면 git add . 를 안했거나 깃에 연결이 되어있지 않는 등 문제가 발생한 것이다.<br/>
+{: .prompt-tip }
+
+---
+<br/>
+
+<!-- git commit -->
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/af756989-ca55-41ae-9167-fda635809602)
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/41a8d2c9-4501-42fa-b430-5bf8b4bdd782)
+<br/>
+<br/>
+
+```bash
+---
+git commit -m "커밋 메세지"
+---
+```
+
+> 2 - 5. 이제 commit을 해보자.<br/>
+> -m 은 커밋 메세지를 남기는 옵션이다.<br/>
+> 작성자 같은 경우는 처음 블로그의 소스를 commit 하는 것이니 [SYSTEM] INIT 이라는 메세지를 남겼다.<br/>
+> commit 이 진행되면서 이렇게 쭉 로그가 출력된다.
+{: .prompt-tip }
+
+---
+<br/>
+
+<!-- git push -->
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/4674c658-562d-4778-815e-594b89be9850)
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/f70dc63e-c88d-481d-8ef9-59720441cf5b)
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/b42dcc29-4a3f-439a-8f50-9e1811e548ba)
+<br/>
+<br/>
+
+```bash
+---
+git push origin main
+---
+```
+
+> 2 - 6. commit을 했으니 push를 해야 한다.<br/>
+> 위의 push 명령어를 이용하고 origin의 main이라는 브랜치로 push를 진행한다.<br/>
+> 마찬가지로 로그가 쭈욱 남는 것을 확인할 수 있다.
+> 이제 Github의 해당 Repository로 들어가면 코드가 추가된 것을 확인할 수 있다.
+{: .prompt-tip }
 
 <br/>
+<details>
+    <summary><b>이 부분에서 Fork 한 사람들과 차이점이 발생할 수 있다.</b></summary>
+        <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;위의 작업을 마치면 Fork를 뜬 Repository의 상태와 동일하게 된다.<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>하지만 다른점이 한 개 있는데 Fork를 뜬 Repository는 default 브랜치가 master로 잡힐 것이다.</b><br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;해당 테마에서 기본 브랜치를 master로 잡아뒀기 때문이다.<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;해결법: <a href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank">Fork와 .zip의 차이점</a>
+</details>
+
+---
+<br/>
+
+#### 3. 배포 준비
+
+
+
+
+
 
 <!-- K-054 부터 적으면 된다. -->
 <!-- 라인은 33 행 부터 -->
