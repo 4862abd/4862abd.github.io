@@ -76,8 +76,8 @@ Fork로 진행하는 방법도 굉장히 유용하지만, 한 계정 당 같은 
 > 우선 Fork를 받았다면 자동으로 본인 계정의 Repository로 소스를 가져온다.<br/>
 > 그 후, 탭 중 Settings 에 들어가서 General - Repository name 을<br/>
 > <b> 본인 아이디.github.io</b><br/>
-> 로 변경만 해주면 내가 진행하려는 <b>.zip 파일을 GitHub와 연동한 직후의 상태( 번)</b>와 동일해진다.<br/>
-> 혹시 Fork를 딴 후, 진행상황을 모르겠다면 번 이후의 방법을 진행하면 된다.<br/>
+> 로 변경만 해주면 내가 진행하려는 <b>.zip 파일을 GitHub와 연동한 직후의 상태(2 - 6번)</b>와 동일해진다.<br/>
+> 혹시 Fork를 딴 후, 진행상황을 모르겠다면 2 - 6번 부터 방법을 진행하면 된다.<br/>
 > <br/>
 > 편한 방법으로 선택하고 진행하면 된다.
 {: .prompt-info }
@@ -103,7 +103,7 @@ Fork로 진행하는 방법도 굉장히 유용하지만, 한 계정 당 같은 
 ## ● 시작
 <br/>
 
-#### 1. Repository 생성, Git 연결
+### 1. Repository 생성, Git 연결
 
 <!-- Create new Repository -->
 ![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/f87a05c8-882d-44fa-948d-db485733e8f7)
@@ -169,7 +169,7 @@ exit
 ---
 <br/>
 
-#### 2. 초기 설정, Git commit & push
+### 2. 초기 설정, Git commit & push
 
 <!-- .git 폴더 확인 -->
 ![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/825a0639-c981-4ba0-9655-a2321daed3e6)
@@ -284,8 +284,8 @@ git push origin main
 
 > 2 - 6. commit을 했으니 push를 해야 한다.<br/>
 > 위의 push 명령어를 이용하고 origin의 main이라는 브랜치로 push를 진행한다.<br/>
-> 마찬가지로 로그가 쭈욱 남는 것을 확인할 수 있다.
-> 이제 Github의 해당 Repository로 들어가면 코드가 추가된 것을 확인할 수 있다.
+> 마찬가지로 로그가 쭈욱 남는 것을 확인할 수 있다.<br/>
+> 이제 Github의 해당 Repository로 들어가면 코드가 추가된 것을 확인할 수 있다.<br/>
 {: .prompt-tip }
 
 <br/>
@@ -301,14 +301,128 @@ git push origin main
 ---
 <br/>
 
-#### 3. 배포 준비
+### 3. 블로그 가동
+#### 작성자 같은 경우, 소스를 편하게 관리하기 위해 VSCode를 이용하기로 했습니다.
+<br/>
 
+<!-- Check GitHub, Delete etc. files -->
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/12ce7f40-2dba-4743-86ab-7623e7c75218)
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/a656da91-0bfe-49a5-b886-09906cc86879)
+<br/>
+<br/>
 
+> 3 - 1. GitHub에 파일이 정상적으로 올라간 것을 확인한다.<br/>
+> 이 중에서 배포를 위해 지워야 할 파일이 몇 있다.<br/>
+> <br/>
+> <b>commitlint.yml</b><br/>
+> <b>page-deploy.yml.hook</b><br/>
+> <br/>
+> .github - workflows 안에 있는 위 두 파일을 남기고 .github 내의 모든 폴더, 파일을 지운다.<br/>
+> 그리고 page-deploy.yml.hook 이라는 파일의 명에서 .hook 부분을 지워서<br/>
+> <b>page-deploy.yml</b><br/>
+> 로 만든다.<br/>
+{: .prompt-tip }
 
+<br/>
+<br/>
 
+<!-- Check deleted files -->
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/422ec085-3ff4-48cb-9ad8-a3523c1c7ffd)
+<br/>
+<br/>
 
+> 그러면 이렇게 <b>.github - workflows - commitlint.yml, pages-deplay.yml 만 남아있는 상태가 된다.</b><br/>
+{: .prompt-tip }
 
-<!-- K-054 부터 적으면 된다. -->
-<!-- 라인은 33 행 부터 -->
+---
+<br/>
+
+<!-- bundle install -->
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/9fba819e-6bcc-44a3-b833-21733e166930)
+<br/>
+<br/>
+
+```shell
+---
+bundle install
+---
+```
+
+> 3 - 2. 그 후, 위의 명령어를 입력합니다.<br/>
+> <b>대부분의 포스팅에서 저 명령어를 입력하기 이전에 tools/... 이러한 명령어를 입력하라고 한다.</b><br/>
+> 이는 초기 설정에 필요 없는 파일을 날리는 명령어라고 하는데,<br/>
+> <b>굳이 하지 않아도 문제 없다.</b><br/>
+> <br/>
+> build나 deploy가 꼬이는 문제는 어떡하냐고 묻는다면..<br/>
+> 요새 버전에는 해당 파일들이 없는 경우도 있고 포함 되어 있는 .gitignore 작성이 정말 잘 되어 있어서 꼬일 수 있는 파일은 애초에 Git에 올리질 못 한다.<br/>
+> <br/>
+> 하지만 혹시라도 찝찝한 사람들을 위해 지워야 할 파일 목록은 남겨 두겠다.<br/>
+> 지워야 할 파일 목록:<br/>
+> 1. .travis.yml<br/>
+> 2. docs 폴더<br/>
+> 3. _posts 폴더 하위의 파일들<br/>
+> <br/>
+>
+> 우선 작성자는 1, 2 번의 파일, 폴더가 존재하지도 않았다.<br/>
+{: .prompt-tip }
+
+---
+<br/>
+
+<!-- bundle install -->
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/9fba819e-6bcc-44a3-b833-21733e166930)
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/22633a45-d076-4e3f-b567-267e68e4c93f)
+<br/>
+<br/>
+
+```shell
+---
+bundle install
+---
+```
+
+> 3 - 3. 그 후, 위의 명령어를 입력한다.<br/>
+> 여러 파일이 생성되는 것을 확인할 수 있다.<br/>
+> ex)<br/>
+> _site 폴더<br/>
+> Gemfile.lock 등<br/>
+{: .prompt-tip }
+
+---
+<br/>
+
+<!-- jekyll serve -->
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/3a04e61a-d568-4a75-ba20-3893a742272e)
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/cc938f88-2759-48ad-a8fb-8f41f247bd34)
+<br/>
+<br/>
+
+```shell
+---
+jekyll serve
+---
+```
+
+> 3 - 4. 위의 명령어를 입력하여 서버를 가동하고<br/>
+> 두 번째 사진 같이 로그가 나온다면 성공이다.<br/>
+> 로그를 보면 http://127.0.0.1:4000 으로 접속이 가능하다고 하며, 콘솔에서 ctrl + c 를 눌러서 중지할 수 있다고 한다.<br/>
+> 그리고 다들 아시겠지만 127.0.0.1 은 localhost 로 대체가 가능하다.<br/>
+><br/>
+> 접속 해보자.<br/>
+{: .prompt-tip }
+
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/9cb02c2e-90cc-4351-9c3d-6a0a977cb256)
+<br/>
+<br/>
+
+> 자, 이제 블로그 가동을 마쳤다!<br/>
+> 나온 산출물을 Git에 commit & push (2 - [3, 4, 5, 6] 확인) 하고 이 과정은 마무리 한다.<br/>
+{: .prompt-tip }
+
+### 4. 자동 배포 오류 해결..
+#### 내 불행은 여기서 멈추질 못 했다..
+
+내가 접한 에러: [**깃 블로그 개설하기(Chirpy theme) - 오류 해결**](https://4862abd.github.io/posts/create-git-blog-3_error)
+
 
 <br/>
