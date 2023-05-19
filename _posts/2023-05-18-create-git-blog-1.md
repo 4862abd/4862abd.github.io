@@ -295,7 +295,7 @@ git push origin main
         &nbsp;&nbsp;&nbsp;&nbsp;위의 작업을 마치면 Fork를 뜬 Repository의 상태와 동일하게 된다.<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;<b>하지만 다른점이 한 개 있는데 Fork를 뜬 Repository는 default 브랜치가 master로 잡힐 것이다.</b><br/>
         &nbsp;&nbsp;&nbsp;&nbsp;해당 테마에서 기본 브랜치를 master로 잡아뒀기 때문이다.<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;해결법: <a href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank">Fork와 .zip의 차이점</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;해결법: <a href="https://4862abd.github.io/posts/create-git-blog-2" target="_blank">Fork와 .zip의 차이점</a>
 </details>
 
 ---
