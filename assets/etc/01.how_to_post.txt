@@ -20,3 +20,9 @@ ex)
 콜아웃 하단에 적기
 {: .prompt-info }
 
+☆ 토글 사용법
+<details>
+    <summary><b>토글 제목</b></summary>
+        <br/>
+        본문
+</details>
