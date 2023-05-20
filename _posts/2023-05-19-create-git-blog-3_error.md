@@ -114,56 +114,56 @@ Build & Deploy, 즉 빌드, 배포에 실패했다고 나온다.<br/>
 
 ``` shell
 ---
-# Run bundle exec htmlproofer _site --disable-external --check-html --allow_hash_href
-# Running ["ScriptCheck", "LinkCheck", "ImageCheck", "HtmlCheck"] on ["_site"] on *.html... 
+Run bundle exec htmlproofer _site --disable-external --check-html --allow_hash_href
+Running ["ScriptCheck", "LinkCheck", "ImageCheck", "HtmlCheck"] on ["_site"] on *.html... 
 
 
-# Ran on 23 files!
+Ran on 23 files!
 
 
-# - _site/404.html
-#   *  internal script /assets/js/dist/page.min.js does not exist (line 1)
-# - _site/about/index.html
-#   *  internal script /assets/js/dist/page.min.js does not exist (line 1)
-# - _site/archives/index.html
-#   *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
-# - _site/categories/blogging/index.html
-#   *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
-# - _site/categories/demo/index.html
-#   *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
-# - _site/categories/index.html
-#   *  internal script /assets/js/dist/categories.min.js does not exist (line 1)
-# - _site/categories/tutorial/index.html
-#   *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
-# - _site/index.html
-#   *  internal script /assets/js/dist/home.min.js does not exist (line 1)
-# - _site/posts/customize-the-favicon/index.html
-#   *  internal script /assets/js/dist/post.min.js does not exist (line 1)
-# - _site/posts/enable-google-pv/index.html
-#   *  internal script /assets/js/dist/post.min.js does not exist (line 155)
-# - _site/posts/getting-started/index.html
-#   *  internal script /assets/js/dist/post.min.js does not exist (line 29)
-# - _site/posts/text-and-typography/index.html
-#   *  internal script /assets/js/dist/post.min.js does not exist (line 22)
-# - _site/posts/write-a-new-post/index.html
-#   *  internal script /assets/js/dist/post.min.js does not exist (line 183)
-# - _site/tags/favicon/index.html
-#   *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
-# - _site/tags/getting-started/index.html
-#   *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
-# - _site/tags/google-analytics/index.html
-#   *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
-# - _site/tags/index.html
-#   *  internal script /assets/js/dist/commons.min.js does not exist (line 1)
-# - _site/tags/pageviews/index.html
-#   *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
-# - _site/tags/typography/index.html
-#   *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
-# - _site/tags/writing/index.html
-#   *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/404.html
+  *  internal script /assets/js/dist/page.min.js does not exist (line 1)
+- _site/about/index.html
+  *  internal script /assets/js/dist/page.min.js does not exist (line 1)
+- _site/archives/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/categories/blogging/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/categories/demo/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/categories/index.html
+  *  internal script /assets/js/dist/categories.min.js does not exist (line 1)
+- _site/categories/tutorial/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/index.html
+  *  internal script /assets/js/dist/home.min.js does not exist (line 1)
+- _site/posts/customize-the-favicon/index.html
+  *  internal script /assets/js/dist/post.min.js does not exist (line 1)
+- _site/posts/enable-google-pv/index.html
+  *  internal script /assets/js/dist/post.min.js does not exist (line 155)
+- _site/posts/getting-started/index.html
+  *  internal script /assets/js/dist/post.min.js does not exist (line 29)
+- _site/posts/text-and-typography/index.html
+  *  internal script /assets/js/dist/post.min.js does not exist (line 22)
+- _site/posts/write-a-new-post/index.html
+  *  internal script /assets/js/dist/post.min.js does not exist (line 183)
+- _site/tags/favicon/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/tags/getting-started/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/tags/google-analytics/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/tags/index.html
+  *  internal script /assets/js/dist/commons.min.js does not exist (line 1)
+- _site/tags/pageviews/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/tags/typography/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
+- _site/tags/writing/index.html
+  *  internal script /assets/js/dist/misc.min.js does not exist (line 1)
 
-# HTML-Proofer found 20 failures!
-# Error: Process completed with exit code 1.
+HTML-Proofer found 20 failures!
+Error: Process completed with exit code 1.
 ---
 ```
 
