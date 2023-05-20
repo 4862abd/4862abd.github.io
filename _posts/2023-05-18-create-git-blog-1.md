@@ -422,7 +422,7 @@ jekyll serve
 ### 4. 자동 배포 오류 해결..
 #### 내 불행은 여기서 멈추질 못 했다..
 
-<!-- 내가 접한 에러: [**깃 블로그 개설하기(Chirpy theme) - 오류 해결**](https://4862abd.github.io/posts/create-git-blog-3_error) -->
+<!-- 내가 접한 에러: [**깃 블로그 개설하기(Chirpy theme) - 오류 해결**](https://4862abd.github.io/posts/create-git-blog-error-3) -->
 
 
 <br/>
