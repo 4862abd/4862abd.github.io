@@ -1,6 +1,9 @@
 # The Site Configuration
 future: true  # 포스팅 개시할 때, 바로 반영되는 옵션
 
+# for UPDATE POSTS
+test: true
+
 # Import the theme
 theme: jekyll-theme-chirpy
 
