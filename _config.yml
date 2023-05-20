@@ -2,7 +2,7 @@
 future: true  # 포스팅 개시할 때, 바로 반영되는 옵션
 
 # for UPDATE POSTS
-# test: true # UPDATE 안되면 여기에 추가
+# test: true # UPDATE 안되면 여기에 추가 
 
 # Import the theme
 theme: jekyll-theme-chirpy
