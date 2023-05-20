@@ -29,6 +29,8 @@ Test site<br/>
 ### 소제목 목록
 ● 내가 처음 마주친 에러<br/>
 ● 해결 과정<br/>
+● 실패 했던 방법들<br/>
+● 내가 찾은 방법<br/>
 ● 후기<br/>
 
 ### ● 내가 처음 마주친 에러
@@ -184,6 +186,12 @@ Error: Process completed with exit code 1.
 > 처음에는 이 에러를 잡으려고 엄청 노력했다.<br/>
 {: .prompt-info }
 <br/>
+
+---
+
+## ● 실패 했던 방법들
+<b>(구글에서 찾거나 chirpy-theme의 공식 GitHub, js 빌드 관련 공식 doc 등)</b><br/>
+
 <details>
     <summary><b>1. js 파일을 직접 /assets/js/dist 폴더에 넣기 - 실패</b></summary>
     <br/>
@@ -259,6 +267,8 @@ Error: Process completed with exit code 1.
 ---
 <br/>
 
+## ● 내가 찾은 방법
+
 > 이외에도 여러 과정을 거쳐서 스스로 방법을 찾아냈다.<br/>
 > <b>에러가 나는 과정은 Test site</b>, 해당 과정이 빌드 시 실패한다는 점.<br/>
 > 그리고 <b>Test site 에대한 설정은 pages-deploy.yml 에 포함되어</b> 있다.<br/>
@@ -312,8 +322,19 @@ Error: Process completed with exit code 1.
 > <br/>
 > <b style="font-size: 20px;">이로써 에러 해결!</b><br/>
 > <br/>
-> <i>
-> 이틀 걸렸나... <br/>
-> <b style="color: red;">이 에러의 해결법을 아는 사람은 단 한 명, 단 한 개의 포스팅도 찾지 못 했다..</b><br/>
-> </i>
 {: .prompt-tip }
+
+## ● 후기
+
+> 보면 알겠지만 정말 간단한 해결 방법이었다.<br/>
+> <br/>
+> <i>
+> 하지만 이틀 걸렸나... <br/>
+> <b style="color: red;">이 에러의 해결법을 아는 사람은 단 한 명, 단 한 개의 포스팅도 찾지 못 했다..</b><br/>
+> <br/>
+> </i>
+> 원래 포스팅은 하지 않으려 했지만, 공식 GitHub 에도 같은 에러를 호소하는 사람들이 적지 않고,<br/>
+> 이런 문제를 만나면 나처럼 삽질을 많이 할 사람들을 위해서 포스팅을 결심했다.<br/>
+> <br/>
+> 좋아하는 사수가 포스팅을 추천하기도 했다..ㅎ<br/>
+{: .prompt-info }
