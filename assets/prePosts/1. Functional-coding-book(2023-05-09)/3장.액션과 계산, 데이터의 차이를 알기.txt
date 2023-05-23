@@ -270,4 +270,81 @@ GROUP BY 같이 JPA가 지원하지 않는 기능은 Java의 stream을 활용하
 ---
 ```
 
-이렇게 만들어진 위의 등급을 나누는 Method는 언제든지 재사용 가능하고 명확하며 구분하기 쉽다.
+이렇게 만들어진 위의 등급을 나누는 method는 언제든지 재사용 가능하고 명확하며 구분하기 쉽다.
+그리고 위의 method는 같은 값을 넣으면 항상 같은 결과를 도출해낼 것이다.
+즉, 이렇게 만들어진 기능은 계산의 특징을 띄게된다.
+
+책에서 설명하는 계산 로직을 몇 개 더 나열하겠다.
+
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/0193c604-8812-4876-add3-a62c9f0875a8)
+(쿠폰 데이터 조회하기)
+
+위의 쿠폰 데이터를 등급별로 정리할 예정이다.
+JS 코드의 원본을 먼저 보자
+
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/2ec2fdcb-10c2-4549-8051-099598574bcd)
+
+```JS
+---
+    function selectCouponsByRank(coupons, rank) {
+        var ret = [];
+        for(var c = 0; c < coupons.length; c++) {
+            var coupon = coupons[c];
+            // === 는 양측 데이터의 타입까지 비교한다.
+            if(coupon.rank === rank)
+                ret.push(coupon.code);
+        }
+
+        return ret;
+    }
+---
+```
+
+```Java
+---
+    // DB에서 조회해오는 쿠폰 데이터를 담을 객체
+    public class Coupon {
+        private String code;
+        private String rank;
+
+        // Getter, Setter 생략
+    }
+
+    ...
+
+
+    public List<String> selectCouponsByRank(List<Coupons> coupons, String rank) {
+        // return을 담을 List<String>
+        List<String> ret = new ArrayList<Coupon>();
+
+        // 파라미터로 받은 List의 크기 만큼 동작
+        for(int c = 0; c < coupons.size(); c++) {
+            Coupon coupon = coupons.get(c);
+
+            // === -> .equals()
+            if(coupon.getRank().equals(rank))
+                ret.add(coupon.getCode());
+        }
+
+        return ret;
+    }
+---
+```
+
+위의 method는 이제 기준 랭크를 파라미터로 받는다면 List에 담긴 Coupon 객체의 rank 속성과 비교해서 등급 별 리스트를 줄것이다.
+이는 같은 리스트, 같은 기준의 rank를 주면 항상 같은 결과값을 주는 계산의 역할을 한다.
+
+---
+
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/923c0314-8731-4f48-9d49-69336d86ed6b)
+위의 사진은 상단의 구독자의 등급을 매기는 계산과 이 사진 바로 상단의 쿠폰을 나누는 계산으로 만들어질 또 하나의 계산이다.
+(유저의 등급과 쿠폰이면 보낼 이메일을 만들 수 있다는 의미의 계산이다.)
+(계속하여 계산만 예시로 보여줘서 스킵하겠다.)
+
+![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/007c68f0-b32c-4e3e-80ca-16f8efccab27)
+위의 사진은 여러 계산을 통해 구독자들에게 보낼 이메일을 만드는 로직이다.
+바로 위의 emailForSubscriber method를 구독자 수 만큼 반복하여 만들어진 이메일의 List 를 return 한다.
+
+---
+
+※※ 이메일 보내기는 액션입니다.
