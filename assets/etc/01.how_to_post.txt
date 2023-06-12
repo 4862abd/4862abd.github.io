@@ -26,3 +26,9 @@ ex)
         <br/>
         본문
 </details>
+
+☆ 이미지 경로 잡기
+# img_cdn: "https://chirpy-img.netlify.app"   # default 이미지 경로
+img_cdn:
+위처럼 img_cdn이 잡혀있는 곳이 있는데, img_cdn이 잡히면 이미지의 경로를 찾을 때, preFix로 우리가 기입한 경로의 앞에 img_cdn의 경로를 붙인다.
+그래서 나는 아예 빈 값으로 설정하고 진행했다.
