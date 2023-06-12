@@ -7,17 +7,11 @@ tags: [typography]
 math: true
 mermaid: true
 published: true # 포스팅 개시할 때, 바로 반영되는 옵션
-# image: 
-#   path: /commons/devices-mockup.png
+image: 
+  path: /assets/img/02.Accurate-series/00.main.png
 #   lqip: data:image/webp;base64,UklGRpoAAABXRUJQVlA4WAoAAAAQAAAADwAABwAAQUxQSDIAAAARL0AmbZurmr57yyIiqE8oiG0bejIYEQTgqiDA9vqnsUSI6H+oAERp2HZ65qP/VIAWAFZQOCBCAAAA8AEAnQEqEAAIAAVAfCWkAALp8sF8rgRgAP7o9FDvMCkMde9PK7euH5M1m6VWoDXf2FkP3BqV0ZYbO6NA/VFIAAAA
 #   alt: Responsive rendering of Chirpy theme on multiple devices.
 ---
-
-<!-- 표지 -->
-<!-- 로컬 -->
-<!-- ![image](https://github.com/4862abd/4862abd.github.io/assets/77370682/ce261bb4-c073-43f4-a3df-9b4411144ad4) -->
-<!-- 배포 -->
-![image](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/f929b9d7-b69a-4a34-830f-7061cc5d8a99)
 
 ---
 
