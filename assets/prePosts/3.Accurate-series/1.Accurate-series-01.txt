@@ -122,14 +122,14 @@ OOP(객체 지향 프로그래밍, Object Orient Programming) 의 관점에서 �
 ---
 Python 코드
 
-class Adder;
-    def add(self, a, b);
-        return a + b;
+class Adder:
+    def add(self, a, b):
+        return a + b
 
 와
 
-def add(a, b);
-    return a + b;
+def add(a, b):
+    return a + b
 
 ---
 
