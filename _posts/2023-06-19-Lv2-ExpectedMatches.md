@@ -72,16 +72,12 @@ A, B : N 이하인 자연수 (단, A ≠ B 입니다.)<br/>
 
 회사의 친한 동료랑 같이 푼 문제이다.<br/>
 <br/>
-처음 접하는 Greedy 방법을 사용한 문제였다.<br/>
-그래서 긴장한걸까, 정말 시간을 많이 허비했다.<br/>
-그것도 바보처럼.<br/>
+낚일 뻔 했다.<br/>
 <br/>
-문제를 잘 읽으면 보트가 작아서 한 보트에 최대 두 명의 인원이 탈 수 있다고 한다.<br/>
+또, DP 이용해서 2의 지수가 남긴 배열을 만들 뻔 했다.<br/>
 <br/>
-하지만 난 한 보트의 limit에 도달할 때 까지 많은 인원을 태우려 했다.<br/>
-어쩐지 체점하는데 계속 답이 틀렸다고 나오더라..<br/>
-<br/>
-문제를 잘 읽자.<br/>
+생각할 필요도 없다.<br/>
+머리 속에 있던 그 식이 정답이었다.<br/>
 <br/>
 
 ---
@@ -91,22 +87,22 @@ A, B : N 이하인 자연수 (단, A ≠ B 입니다.)<br/>
 ```java
 public class Solution {
     public int solution(int[] people, int limit) {
-        int answer = 0;
-
-        final int[] sortedPeople = IntStream.of(people)
-                .sorted()
-                .toArray();
-
-        int index = 0;
-        for (int i = sortedPeople.length - 1; i >= index; i--) {
-            if (sortedPeople[i] + sortedPeople[index] <= limit) {
-                index++;
-                answer++;
-            } else {
-                answer++;
+        int answer = 1;
+            
+        int aCount = a / 2 + (a % 2);
+        int bCount = b / 2 + (b % 2);
+        
+        while(aCount != bCount) {
+            if (aCount > 1) {
+                aCount = aCount / 2 + (aCount % 2);
             }
-        }
+            if (bCount > 1) {
+                bCount = bCount / 2 + (bCount % 2);
+            }
 
+            answer++;
+        }
+        
         return answer;
     }
 }
