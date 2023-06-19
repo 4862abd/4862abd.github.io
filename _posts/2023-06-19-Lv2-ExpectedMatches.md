@@ -19,7 +19,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 ● 해결 코드<br/>
 <br/>
 
-<i>출처: https://school.programmers.co.kr/learn/courses/30/lessons/42885</i><br/>
+<i>출처: https://school.programmers.co.kr/learn/courses/30/lessons/12985</i><br/>
 <br/>
 
 ---
