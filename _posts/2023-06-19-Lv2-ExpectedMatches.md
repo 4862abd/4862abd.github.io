@@ -86,7 +86,7 @@ A, B : N 이하인 자연수 (단, A ≠ B 입니다.)<br/>
 
 ```java
 public class Solution {
-    public int solution(int[] people, int limit) {
+    public int solution(int n, int a, int b) {
         int answer = 1;
             
         int aCount = a / 2 + (a % 2);
