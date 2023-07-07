@@ -89,9 +89,9 @@ public class Solution {
     
     public void initFriendBracket() {
         friendBracket = new HashMap<>();
-        friendBracket.put(')', '(');
-        friendBracket.put('}', '{');
-        friendBracket.put(']', '[');
+        friendBracket.put('역소괄호', '정소괄호');
+        friendBracket.put('역중괄호', '정중괄호');
+        friendBracket.put('역대괄호', '정대괄호');
     }
 }
 ```
