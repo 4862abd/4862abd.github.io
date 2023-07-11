@@ -15,3 +15,5 @@ https://school.programmers.co.kr/learn/courses/30/lessons/72410
 https://school.programmers.co.kr/learn/courses/30/lessons/161990
 https://school.programmers.co.kr/learn/courses/30/lessons/172928
 https://school.programmers.co.kr/learn/courses/30/lessons/92334
+// 완전탐색
+https://school.programmers.co.kr/learn/courses/30/lessons/87946     0
