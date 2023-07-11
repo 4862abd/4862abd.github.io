@@ -1,0 +1,8 @@
+https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html
+
+https://docs.oracle.com/javase/8/docs/api/java/lang/package-summary.html
+https://docs.oracle.com/javase/8/docs/api/java/util/package-summary.html
+https://docs.oracle.com/javase/8/docs/api/java/io/package-summary.html
+https://chat.openai.com/
+https://openjdk.org/groups/core-libs/
+http://www.tcpschool.com/java/java_api_wrapper
