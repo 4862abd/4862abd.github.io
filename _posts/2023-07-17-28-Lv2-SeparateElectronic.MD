@@ -121,7 +121,7 @@ class Solution {
             int b = wire[1];
             ROUTE[a][b] = ROUTE[b][a] = 1;
         }
-        printDoubleArray(ROUTE, "ROUTE");
+        
         dfs(1);
         return MIN;
     }
