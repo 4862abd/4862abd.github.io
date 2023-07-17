@@ -21,4 +21,5 @@ https://school.programmers.co.kr/learn/courses/30/lessons/87946     0
 https://school.programmers.co.kr/learn/courses/30/lessons/86491     0
 https://school.programmers.co.kr/learn/courses/30/lessons/42840     0
 https://school.programmers.co.kr/learn/courses/30/lessons/42839     0
-https://school.programmers.co.kr/learn/courses/30/lessons/42842
+https://school.programmers.co.kr/learn/courses/30/lessons/42842     0
+https://school.programmers.co.kr/learn/courses/30/lessons/86971     0
