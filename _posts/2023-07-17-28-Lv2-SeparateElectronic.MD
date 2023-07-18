@@ -1,5 +1,5 @@
 ---
-title: Lv2 - 전력망을 둘로 나누기 , Java
+title: Lv2 - 전력망을 둘로 나누기, Java
 author: park
 date: 2023-07-17 15:12:00 +0800
 categories: [알고리즘, 완전탐색]
