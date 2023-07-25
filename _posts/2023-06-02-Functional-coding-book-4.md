@@ -286,6 +286,8 @@ public class MegaMart {
     List<ShoppingItem> shoppingCart = new ArrayList<>();
     // 카트에 담긴 상품 가격 총합
     Double shoppingCartTotal = 0.0;
+    // 활성화될 버튼을 담은 리스트
+    List<BuyButton> activedButtons = new ArrayList<>();
 
     // 호출되어 컨트롤러 역할을 하는 메소드
     public Double mainController(String name, Double price) {
@@ -294,9 +296,7 @@ public class MegaMart {
         Double totalPrice = this.calcCartTotal();
         this.setShoppingCartTotal(totalPrice);
         this.updateShippingIcons();
-        this.updateTaxDom();
-
-        return shoppingCartTotal;
+        return totalPrice;
     }
 
     // 파라미터를 받아 새로운 상품을 돌려주는 메소드
@@ -333,11 +333,11 @@ public class MegaMart {
     }
 
     // 총합과의 비교로 제품 당 무료배송 버튼의 출력여부 제어
-    public List<BuyButton> updateShippingIcons() {
+    public void updateShippingIcons() {
         List<BuyButton> buyButtons = this.getBuyButtonsDom();
         List<BuyButton> proccessedBuyButtons = this.setShowFreeButtonFlag(buyButtons);
-
-        return proccessedBuyButtons;
+        this.setActivedButtons(updatedButtons);
+        this.updateTaxDom();
     }
 
     // DB에서 버튼, 아이템을 조회하는 로직
@@ -376,6 +376,11 @@ public class MegaMart {
             result = amount * 0.1;
         }
         return result;
+    }
+
+    // 파라미터로 받은 buttons를 전역변수인 activedButtons에 바인딩
+    public void setActivedButtons(List<BuyButton> buttons) {
+        this.activedButtons = buttons;
     }
 
     // 인스턴스 변수에 파라미터로 받은 세금을 바인딩
