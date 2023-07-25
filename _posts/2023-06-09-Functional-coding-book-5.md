@@ -41,7 +41,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 ## 비즈니스 요구 사항과 설계를 맞추기
 
-![03](/assets/img/05.Functional-coding/05/01.png)
+![01](/assets/img/05.Functional-coding/05/01.png)
 
 ```javascript
 
@@ -206,3 +206,8 @@ public class MegaMart {
 다만 읽다가 중요한 개념이 등장하면 내 공부를 위해서라도 포스팅 할 것이다.<br/>
 <br/>
 음.. 공부가 모자라다.<br/>
+<br/>
+<b>다만 정리하기 전에 좋아하는 선배가 말한 중요 개념만 하나만 곧 정리하겠다.</b><br/>
+<br/>
+
+<!-- [암묵적] (http://localhost:4000/posts/Functional-coding-book-5-1/)<br> -->
