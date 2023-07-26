@@ -33,6 +33,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 ### 카피-온-라이트 대표 코드<br>
 
 ```javascript
+// 호출부
 function main() {
 	...
 	list = getChangedList(list, name);
@@ -40,6 +41,7 @@ function main() {
 	...
 }
 
+// 배열을 복사해서 변경해야할 객체를 찾고 필요시 수정 함수를 호출, 그 후 반환한다.
 function getChangedList(list, name) {
 	let copy = list.slice();
 	let idx = null;
@@ -57,6 +59,7 @@ function getChangedList(list, name) {
 	return copy;
 }
 
+// 파라미터로 받은 객체를 복사한 후, 복사한 객체의 값을 바꿔 반환한다.
 function getChangedObj(obj, name) {
 	let copy = Object.assign({ }, obj);
 	copy['name'] = name;
@@ -66,6 +69,7 @@ function getChangedObj(obj, name) {
 <br>
 
 ```java
+// 호출부
 public void testMethod() {
 	...
 	list = this.getChangedList(list, name);
@@ -73,6 +77,7 @@ public void testMethod() {
 	...
 }
 
+// 배열을 복사해서 변경해야할 객체를 찾고 필요시 수정 함수를 호출, 그 후 반환한다.
 public List<객체> getChangedList(List<객체> list, String name) {
 	List<객체> copy = new ArrayList<>(list);
 	int idx = -1;
@@ -90,6 +95,7 @@ public List<객체> getChangedList(List<객체> list, String name) {
 	return copy;
 }
 
+// 파라미터로 받은 객체를 복사한 후, 복사한 객체의 값을 바꿔 반환한다.
 public 객체 getChangedObj(객체 obj, String name) {
 	// 복사하는 여러 방법 등(나는 롬복의 builder 패턴을 쓰겠다.)
 	객체 copy = 객체.builder()
