@@ -111,17 +111,17 @@ mermaid: true
 > 일반적으로 알려진 계층형 설계(계층형 아키텍처) 와 그것을 달리하는 것 같다.<br/>
 > 일반적인 <b>3-계층(Tier)</b>의 그것은 이렇게 설명된다.<br/>
 > <br/>
-> ● Presentation Tier<br/>
+> ● <b>Presentation Tier</b><br/>
 > ㄴ 일반 사용자가 애플리케이션과 상호작용하는 애플리케이션의 UI 및 커뮤니케이션 계층<br/>
 > ㄴ 주요 목적: 정보 표시 및 정보 수집<br/>
 > <br/>
-> ● Application Tier<br/>
+> ● <b>Application Tier</b><br/>
 > ㄴ 논리 계층 또는 중간 계층, 애플리케이션의 핵심<br/>
 > ㄴ 특정 비즈니스 규칙 세트인 비즈니스 논리를 사용하여 프레젠테이션 계층에서 수집된 정보가 처리되고, API 호출을 통해 데이터 계층과 통신한다.<br/>
 > ㄴ 주요 목적: 정보 처리 및 데이터 계층의 데이터를 추가, 삭제 또는 수정<br/>
 > ㄴ 일반적으로 사용되는 언어: Python, Java, Perl, PHP, Ruby<br/>
 > <br/>
-> ● Data Tier<br/>
+> ● <b>Data Tier</b><br/>
 > ㄴ 데이터베이스 계층, 데이터 액세스 계층, 백엔드라고 불림.<br/>
 > ㄴ 애플리케이션 계층이 처리하는 정보가 저장 및 관리되는 곳이며 RDBMS, NoSQL DB 서버(Cassandra, CouchDB, MongoDB 등)일 수 있다.<br/>
 > <br/>
@@ -132,16 +132,17 @@ mermaid: true
 > 우리나라 말로는 Layer가 계층으로 해석될 수 있으니 공부할 때 주의를 요한다.<br/>
 > 3-Layer 아키텍처에 관한 설명은 이렇다.<br/>
 > <br/>
-> ● Presentation Layer<br/>
-> ㄴ 모든 컨트롤러와 뷰(UI)가 위치하는 곳으 작업의 총괄을 담당하는 층을 의미한다.<br/>
+> ● <b>Presentation Layer</b><br/>
+> ㄴ 모든 컨트롤러와 뷰(UI)가 위치하는 곳으로 작업의 총괄을 담당하는 층을 의미한다.<br/>
 > ㄴ 데이터가 표시되는 방식과 각 CRUD 작업 흐름의 시작과 관련된 논리만 포함되고, 단순해야 한다.<br/>
 > <br/>
-> ● Business Logic Layer<br/>
+> ● <b>Business Logic Layer</b><br/>
 > ㄴ 응용 프로그램의 대부분의 논리가 이 계층에 배치된다.<br/>
 > ㄴ 데이터 모델에 대한 자세한 정보나 지식이 없어야 하고, 데이터베이스에 관한 쿼리를 실행할 수 없다.<br/>
 > ㄴ input되는 데이터는 Presentation Layer가 기반이 될 것이며, output되는 데이터는 Data Access Layer가 기반이 될 것이다.<br/>
 > ㄴ 이 계층에서는 중복된 코드를 줄일 수 있는 많은 기술을 채택, 사용할 수 있으며, 중복을 줄이기 위해 모달, 컴포넌트 형식으로 작은 조각으로 나뉘어 진다.<br/>
-> ● Data Access Layer(이후 DAL)<br/>
+> <br/>
+> ● <b>Data Access Layer(이후 DAL)</b><br/>
 > ㄴ 데이터 소스와 통신을 구현하는 계층이다.<br/>
 > ㄴ 이 계층은 DAL 추상화와 DAL 로 구분된다.<br/>
 > ㄴ DAL 추상화 계층은 비즈니스 논리가 데이터 계층과 상호 작용 하는데 필요한 모든 논리가 단일 클래스 집합(계층) 으로 격리되는 "관심사 분리" 개념을 따른다.<br/>
