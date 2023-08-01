@@ -1,5 +1,5 @@
 ---
-title: 8장, 계층형 설계 1
+title: 8장, 계층형 설계 Ⅰ
 author: park
 date: 2023-07-27 17:56:00 +0800
 categories: [CS, 쏙쏙 들어오는 함수형 코딩(2023-05 ~]
@@ -15,7 +15,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 ---
 
-## 8장 계층형 설계 1.
+## 8장 계층형 설계 Ⅰ.
 
 ### 소제목 목록
 ● <b>시작하며</b><br>
@@ -60,8 +60,10 @@ function freeTieClip(cart) {
 	}
 
 	if (hasTie && !hasTieClip) {
-		var tieClip = make_item('tie clip', 0);	// 넥타이 핀을 0원으로 생성
-		return add_item(cart, tieClip);		// 카트에 넥타이 핀 추가
+		// 넥타이 핀을 0원으로 생성
+		var tieClip = make_item('tie clip', 0);
+		// 카트에 넥타이 핀 추가
+		return add_item(cart, tieClip);
 	}
 
 	return cart;
@@ -238,6 +240,7 @@ function setPriceByName(cart, name, price) {
 위 부분도 수정하자.<br>
 3. index가 null 이 아닐 경우 복사된 카트의 데이터를 직접 바인딩해주는 코드가 존재한다.<br>
 위 부분을 배열의 index에 맞춰 상품을 반환하는 함수로 추출해보자.<br>
+
 <br>
 그렇게 되면 2개의 함수를 추가로 정의하게 되는데,<br>
 
@@ -287,9 +290,11 @@ function arrayGet(array, idx) {
 1. <b>직접 구현한 코드는 한 단계의 구체화 수준에 관한 문제만 해결한다.</b><br>
 2. <b>계층형 설계는 특정 구체화 단계에 집중할 수 있게 도와준다.</b><br>
 3. <b>호출 그래프는 구체화 단계에 대한 풍부한 단서를 보여준다.</b><br>
+
 예시: <br>
 
 ![03](/assets/img/05.Functional-coding/08/03.png)
+
 <br>
 
 4. <b>함수를 추출하면 더 일반적인 함수로 만들 수 있다.</b><br>
