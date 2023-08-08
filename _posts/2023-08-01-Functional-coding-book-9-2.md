@@ -33,7 +33,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 ### 예시 케이스 1: 시계 할인하기
 
-![04](/assets/img/05.Functional-coding/09/04.png)
+![04](/assets/img/05.Functional-coding/09/04.PNG)
 
 <br/>
 마케팅 담당자가 이번에 새로운 마케팅 전략을 가져왔다.<br/>
