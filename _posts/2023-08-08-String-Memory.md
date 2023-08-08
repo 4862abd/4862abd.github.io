@@ -180,7 +180,7 @@ Java 6 -> 7 에서 변화점 중 하나는 기존 문자열 풀(string constant 
 <br>
 <b>문자열 풀이 GC의 대상으로 잡힐 수 있다는 점이다.</b><br>
 <br>
-[참조] (https://medium.com/@joongwon/string-%EC%9D%98-%EB%A9%94%EB%AA%A8%EB%A6%AC%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0-57af94cbb6bc)
+참조: [참조](https://medium.com/@joongwon/string-%EC%9D%98-%EB%A9%94%EB%AA%A8%EB%A6%AC%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0-57af94cbb6bc)
 <br>
 
 2. 문자열 풀(string constant pool) 의 크기<br>
@@ -202,7 +202,7 @@ Java 6 -> 7 에서 변화점 중 하나는 기존 문자열 풀(string constant 
 {: .prompt-tip }
 
 <br>
-[참조] (https://bloodstrawberry.tistory.com/37)
+참조: [참조](https://bloodstrawberry.tistory.com/37)
 
 <br>
 위 블로그에서 Hash 메모리의 크기를 직접 할당해가며 성능을 비교한 부분이 있는데,<br>
