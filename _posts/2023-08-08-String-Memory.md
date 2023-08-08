@@ -121,7 +121,7 @@ public class PlayGround {
 aaa3과 aaa4의 값이 같다.<br>
 같은 참조 주소값을 가리킨다고 볼 수 있다.<br>
 <br>
-이와 같은 출력값이 발생하는 이유는 String 은 다른 기본 자료형과 달리 <b>특별한 경우</b>이기 때문이다.<br>
+이와 같은 출력값이 발생하는 이유는 String 은 <b>특별한 경우</b>이기 때문이다.<br>
 <br>
 String 을 new 연산자 없이 리터럴로 선언할 경우 내부적으로 String의 intern() 메서드가 호출된다.<br>
 <br>
