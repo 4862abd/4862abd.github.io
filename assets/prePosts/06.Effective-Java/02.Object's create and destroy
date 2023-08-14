@@ -3,7 +3,9 @@
 ### 아이템 목록
 1. 생성자 대신 정적 팩터리 메서드를 고려하라
 2. 생성자에 매개변수가 많다면 빌더를 고려하라
-3. 
+3. private 생성자나 열거 타입으로 싱글턴임을 보증하라
+4. 인스턴스화를 막으려거든 private 생성자를 사용하라
+5. 
 
 ---
 
@@ -140,5 +142,256 @@ public static <E extends Enum<E>> EnumSet<E> noneOf(Class<E> elementType) {
 패턴 1. 점층적 생성자 패턴 (Telescoping Constructor Pattern)
 
 매개변수가 필요한 상황, 책에서는 멤버 변수로 선언된 모든 상황을 설명하려 하는 것 같다.
-그렇게 될 경우 생성자 메서드가 오버로드 되어 생성될 개수는 경우의 수에 해당한다.
+그렇게 될 경우 생성자 메서드가 오버로드 되어 생성될 개수는 멤버 변수로 만들 수 있는 집합의 경우의 수에 해당한다.
+
+정말 너무 많은 수가 등장 할 수 있다.
+그리고 이렇게 선언된 생성자 메서드의 경우 순서에 따라 데이터의 역할이 굉장히 큰 변수를 만들 수 있다.
+이는 일반 개발자가 소스 코드를 확실하게 파악해야 하며 개발에도, 유지보수에도 어려움을 겪을 가능성이 크다.
+
+즉, 가동성이 땅을 친다.
+
+
+패턴 2. 자바빈즈 패턴 (JavaBeans Pattern)
+
+쉽게 생각하면 인스턴스를 획득한 후, 수정자 메서드 (setter) 를 통해 필요한 모든 값을 바인드 해주는 패턴이다.
+내가 근무할 때 많이 사용했던 패턴이기도 하고 제일 무난하다고 생각했다.
+하지만 책에서 설명하는 단점이 여럿 있다.
+
+1. 우선 객체 하나를 위해 수 많은 메서드를 호출해야 한다.
+2. 객체가 완전히 생성되기 전까지는 일관성 (consistency) 이 무너진 상태에 놓인다.
+    ㄴ 계속해서 객체가 바뀌어야 하기 때문.
+3. 클래스를 불변으로 만들 수 없다.
+    ㄴ 불변이라고? 그러면 단점 2번이 성립할 수 없고, 애초에 자바빈즈 패턴이 성립하지 못 한다.
+
+이러한 자바빈즈 패턴의 문제점을 위해 생성이 끝난 객체를 수동으로 얼리고 (freezing) 얼리기 전에는 사용할 수 없게 하는 방법도 있다고 한다.
+이 방법은 이번 아이템에서 내가 찾아내지 못한 방법이다.
+내가 발표자가 아니라면 꼭 질문에 넣을 것이다. ^^
+
+패턴 3. 빌더 패턴 (Builder Pattern)
+
+드디어 책에서 설명하고 하는 패턴이다.
+위 패턴을 보고 여태 롬복에서 제공하는 @Builder  애노테이션이 같은 역할을 한다고 믿었다.
+하지만 @Builder 애노테이션으로 생성되는 소스를 디컴파일러를 통해 확인하니 빌더패턴과 다르게 단순히 모든 멤버 변수를 매개 변수로 받는 생성자 메서드를 추가하는 것이었다.
+
+음... 하지만 디컴파일을 통해 생성된 코드와 다르게 몇 메서드가 추가된 것을 보면 내가 삽질을 덜 한 것일 것 같다.
+우선 빌드 패턴의 소스를 보자.
+
+```java
+public class BuilderPatternClass1 {
+    // 필수
+    private final int a;
+    private final int b;
+    // 선택
+    private final int c;
+    private final int d;
+    private final int e;
+    
+    private BuilderPatternClass1(Builder builder) {
+        this.a = builder.a;
+        this.b = builder.b;
+        this.c = builder.c;
+        this.d = builder.d;
+        this.e = builder.e;
+    }
+    
+    public static class Builder {
+        // 필수
+        private final int a;
+        private final int b;
+        
+        // 선택
+        private int c;
+        private int d;
+        private int e;
+        
+        public Builder(int a, int b) {
+            this.a = a;
+            this.b = b;
+        }
+        
+        public Builder c(int c) {
+            this.c = c;
+            return this;
+        }
+        
+        public Builder d(int d) {
+            this.d = d;
+            return this;
+        }
+                
+        public Builder e(int e) {
+            this.e = e;
+            return this;
+        }
+        
+        public BuilderPatternClass1 build() {
+            return new BuilderPatternClass1(this);
+        }
+    }
+}
+
+...
+
+public class MainClass {
+
+    public static void main(String... args) {
+        
+        BuilderPatternClass1 builderPatternClass1 = new BuilderPatternClass1
+                .Builder(12, 8)
+                .c(100)
+                .d(200)
+                .e(300)
+                .build();
+    }
+
+}
+```
+
+우선 특징 몇 가지를 살펴보자.
+
+1. Builder 를 매개변수로 하는 생성자 메서드가 private 으로 선언되어 있다는 점
+2. 정적 중첩 클래스로 Builder 로 정의되어 있다는 점
+3. 모든 멤버 변수가 final 로 선언되어 함부로 변경할 수 없는 객체가 되었다는 점
+4. Builder 클래스 내에 build 메서드가 상위 클래스의 생성자 메서드를 호출한다는 점 (의존성이 강하다.)
+
+우선 3번 특징에 의하여 한 번 만들어진 BuilderPatternClass1 클래스의 인스턴스는 불변이다.
+그리고 한 번 인스턴스를 생성할 때 메서드를 이어지듯 연결하여 사용할 수 있는데, 이를 플루언트 API (Fluent API), 혹은 메서드 연쇄 (Method Chaining) 이라고 한다.
+그리고 1번, 2번, 4번의 특징이 섞인 것이 내가 예시로 놓은 MainClass 클래스의 main 메서드에서 새로 인스턴스를 얻는 과정의 그것이다.
+직접 new 예약자에 의해 호출되는 것은 정적 중첩 클래스 내부의 Builder 메서드 이다.
+그 후 1번의 특징처럼 private 으로 선언된 멤버 변수를 메서드를 통해 수정하는 모습을 보인다.
+그리고 build 메서드를 통해 private 으로 정의되고 Builder 를 매개변수로 받는 BuilderPatternClass1 클래스의 생성자 메서드를 호출한다.
+이로서 우리는 인스턴스를 얻을 수 있다.
+
+자바의 빌더 패턴은 파이썬과 자바스크립트의 선택적 매개변수를 따라한 것이라고 한다.
+하단의 자바스크립트의 선택적 매개변수의 예시 코드이다.
+
+```javascript
+function choosableParameter(a, b = {}, c = null) {
+    ...
+}
+```
+
+아이템 2의 마지막 부분에 재귀적 타입 한정을 이용하는 클래스를 구현했는데, 이는 정리할 시간이 조금 부족할 것 같아 생략한다.
+
+> 아이템 2에서 획득한 키워드
+> 
+> 공변반환 타이핑 (covariant return typing)
+> 하위 클래스의 메서드가 상위 클래스의 메서드가 정의한 반환 타입이 아닌 그 하위 타입을 반환하는 기능.
+
+---
+
+## ● 아이템 3: private 생성자나 열거 타입으로 싱글턴임을 보증하라,
+● 아이템 4: 인스턴스화를 막으려거든 private 생성자를 사용하라
+
+4번 아이템은 내용이 많지 않기도 하고, 싱글턴에도 적용할 수 있어 합쳤다.
+
+우선 자바빈으로 등록하지 않고 싱글턴을 만들 수 있는 방법을 몇 가지 나열하겠다.
+
+public static final 필드 방식의 싱글턴
+
+```java
+public class FirstSingletonClass {
+    
+    public static final FirstSingletonClass INSTANCE = new FirstSingletonClass();
+    private FirstSingletonClass() {
+        System.out.println("이거 실행되면 안되는데 FirstSingletonClass");
+    }
+
+}
+```
+
+우선 기본 생성자 메서드를 private 으로 정의한 상태이다.
+그리고 인스턴스는 static final 예약자를 통하여 싱글턴임을 보장하는 방식이다.
+
+하지만 이 방법은 리플렉션 API인 AccessibleObject.setAccessible 을 사용해 private 생성자가 호출될 수 있다.
+
+적용 예시
+
+```java
+
+public class FirstSingletonMainClass {
+    
+    public static void main(String... args) {
+        FirstSingletonClass firstSingletonClass = FirstSingletonClass.INSTANCE;
+        firstSingletonClass.setString("무야호~");
+        firstSingletonClass = FirstSingletonClass.INSTANCE;
+        System.out.println("그만큼 신나신 거지~ " + firstSingletonClass.getString());
+
+        // private 생성자를 reflect 를 통해 접근하기
+        FirstSingletonClass isNotAgreedInstance = null;
+        
+        try {
+            // 클래스를 제네릭 와일드카드를 통해 가져오기
+            Class<?> targetClass = FirstSingletonClass.class;
+            
+            // 파라미터가 없고 private 으로 선언된 기본 생성자를 가져오기(NoSuchMethodException 발생 가능(메소드가 없는 경우 예외 던짐))
+            Constructor<?> privateConstructor = targetClass.getDeclaredConstructor();
+            
+            // setAccessible 메서드를 통해 private 등의 접근 제한자로 막힌 메소드의 접근을 허용 - 이 부분이 책에서 설명한 내용
+            privateConstructor.setAccessible(true);
+            
+            // newInstance() 메서드를 통해 Object 를 반환할 때, 명시적 박싱을 통해 원하는 클래스로 형변환
+            // InvocationTargetException: invoke 시에 메서드에서 발생한 exception 이 마치 invoke 구문에서 발생한 것처럼 보이기 때문에 InvocationTargetException 자체의 stack trace 만으로 에러를 해결하기 어렵다.
+                // 그래서 Wrapping 한 예외 클래스이다.
+            // InstantiationException: newInstance() 메서드를 통해 인스턴스 생성 시에, 지정된 객체의 인스턴스를 생성할 수 없는 경우에 throw
+            // IllegalAccessException: 허가되지 않은 객체, 메서드, 필드 등에 접근하려 할 경우 발생
+            isNotAgreedInstance = (FirstSingletonClass) privateConstructor.newInstance();
+            
+            // 접근성을 되돌려 코드 무결성을 유지
+            privateConstructor.setAccessible(false);
+        } catch (NoSuchMethodException noSuchMethodException) {
+            // 이건 사실 추천하지 않는 방법이다.
+            // 로그에 정확한 예외 발생 위치가 노출되기 때문에 보안에 위협이 될 수 있다.
+            noSuchMethodException.printStackTrace();
+        } catch (InvocationTargetException invocationTargetException) {
+            invocationTargetException.printStackTrace();
+        } catch (InstantiationException instantiationException) {
+            instantiationException.printStackTrace();
+        } catch (IllegalAccessException illegalAccessException) {
+            illegalAccessException.printStackTrace();
+        }
+
+        System.out.println("firstSingletonClass: " + System.identityHashCode(firstSingletonClass));
+        System.out.println("isNotAgreedInstance: " + System.identityHashCode(isNotAgreedInstance));
+        System.out.println("firstSingletonClass.getString: " + firstSingletonClass.getString());
+        System.out.println("isNotAgreedInstance.getString: " + isNotAgreedInstance.getString());
+    }
+}
+
+```
+
+> 이거 실행되면 안되는데 FirstSingletonClass
+> 그만큼 신나신 거지~ 무야호~
+> 이거 실행되면 안되는데 FirstSingletonClass
+> firstSingletonClass: 209813603
+> isNotAgreedInstance: 312116338
+> firstSingletonClass.getString: 무야호~
+> isNotAgreedInstance.getString: null
+
+
+그리고 두 번째 방식은 INSTANCE 를 private 으로 선언하고 해당 객체를 호출하는 메서드를 추가한다.
+하지만 해당 방법도 리플렉션에 안전하지 않은 상태이다.
+
+쓰레드에 안전하며 가장 효율적인 방법은 enum 을 활용하는 것이라고 한다.
+
+---
+
+그리고 아이템 4에서 정말 물어보고 싶은 개념이 나왔다.
+
+java.util.Collections 처럼 특정 인터페이스를 구현하는 객체를 생성해주는 정적 메서드 (혹은 팩터리) 를 모아놓을 수도 있다..
+
+이게 뭐야
+동료랑 상의해도 정확한 설명을 모르겠다.
+뭘까...
+
+## ● 아이템 5: 자원을 직접 명시하지 말고 의존 객체 주입을 사용하라
+
+만약 특정 클래스에 의존하는 멤버 변수가 있다고 해보자.
+특히 책에서는 이를 문자열 확인을 위해 바탕이 되는 데이터를 멤버 변수로 선언하여 예시를 든다.
+
+이러한 객체는 직접 구현, 호출할 수도 있지만 여러 곳에서 각 객체 별로 구현되는 경우도 있고, 직접적으로 사용되지 않는 경우도 있기에 초기화를 하는 방식에 다른 방식을 지원하고자 한다.
+바로 정적 유틸리티 클래스나 싱글턴 방식으로 구현하는 것.
+
+하지만 이렇게 사용하는 자원에 따라 동작이 달라지는 클래스에는 정적 유틸리티 클래스나 싱글턴 방식이 적합하지 않다.
+이 보다는 인스턴스를 획득할 때 생성자에 필요한 자원을 넘겨주는 방식이 낫다.
 
