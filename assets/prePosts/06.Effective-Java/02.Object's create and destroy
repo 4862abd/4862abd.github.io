@@ -1,0 +1,120 @@
+# 2장, 객체 생성과 파괴
+
+## ● 아이템 1: 생성자 대신 정적 팩터리 메서드를 고려하라
+
+<b>정적 팩터리 메서드 (static factory method)</b>
+
+우선 키워드를 느낀대로 정리해보자.
+
+정적: static, 메모리 상 거주하게 되는 객체
+팩터리: 객체를 생성하는 역할을 의미하는 키워드
+
+아이템 1의 제목과 연관지어 해석하면,
+생성자 메서드 대신에 정적으로 객체의 인스턴스를 획득할 수 있는 방식의 메서드의 채택을 고려하라.
+
+<b>장점</b>
+
+첫 번째. 이름을 가질 수 있다.
+메서드 명명규칙의 정책을 잘만 설계하면 메서드가 반환하는 객체의 특성을 쉽게 묘사할 수 있다.
+하지만 일반 개발자가 이렇게 짜여진 레거시 코드를 활용해 프로그래밍 한다면 익숙해 지기 전까지
+클래스 하나하나를 뜯어서 팩터리 역할을 하는 메서드를 찾아내야하는 번거로움이 생길 수 있다.
+그래서 책에서도 설명하지만 관용적으로 사용되는 getInstance(), INSTANCE 등을 예시로 사용하는 모습을 볼 수 있다.
+
+두 번째. 호출될 때마다 인스턴스를 새로 생성하지는 않아도 된다.
+불변 클래스 (immutable class, 상태 값을 임의로 수정하지 않게 설계한 클래스) 를 활용하거나 캐싱을 이용할 때 불필요한 인스턴스 획득을 막을 수 있다고 한다.
+그래서 생성 비용이 큰 객체가 자주 요청되는 상황에 성능을 크게 끌어올릴 수 있다고 한다.
+
+세 번째, 반환 타입의 하위 타입 객체를 반환할 수 있는 능력이 있다.
+반환 값으로 구현 클래스를 공개하지 않고도 반환할 수 있어서 API를 작게 유지할 수 있다.
+그리고 이 기술은 인터페이스를 정적 팩터리 메서드의 반환 타입으로 사용하는 인터페이스 기반 프레임워크(아이템 20) 를 구현하는 핵심 기술이 된다고 한다.
+
+네 번째, 입력 매개변수에 따라 매번 다른 클래스의 객체를 반환할 수 있다.
+책에서는 이를 활용한 클래스인 EnumSet 을 예시로 든다.
+코드를 확인해보자.
+
+```java
+public class EnumSetMainClass {
+
+    public enum Week { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY; }
+    
+    public enum AllCase {
+        A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,
+        QW,WE,ER,RT,TY,YU,UI,IO,OP,PA,AS,SD,DF,FG,GH,HJ,JK,KL,LZ,ZX,XC,CV,VB,BN,NM,
+        QWE,WER,ERT,RTY,TYU,YUI,UIO,IOP,OPA,PAS,SDF,DFG,FGH,GHJ,HJK,JKL,KLZ,LZX,ZXC,XCV,CVB,VBN,BNM;
+    }
+    
+    public static void main(String... args) {
+        EnumSet<Week> weekEnumSet = EnumSet.allOf(Week.class);
+        System.out.println("allCaseEnumSet.count: " + Week.values().length);
+        System.out.println("allCaseEnumSet.class: " + allCaseEnumSet.getClass());
+
+        EnumSet<AllCase> allCaseEnumSet = EnumSet.allOf(AllCase.class);
+        System.out.println("allCaseEnumSet.count: " + AllCase.values().length);
+        System.out.println("allCaseEnumSet.class: " + allCaseEnumSet.getClass());
+    }
+}
+```
+
+> 출력
+> 
+> weekEnumSet.count: 7
+> weekEnumSet.class: class java.util.RegularEnumSet
+> allCaseEnumSet.count: 74
+> allCaseEnumSet.class: class java.util.JumboEnumSet
+
+열거형 데이터의 개수와 그 열거형 데이터를 저장할 EnumSet 의 구현 클래스를 출력한 코드이다.
+확인하면 7개의 개수를 가지는 EnumSet은 RegualEnumSet 이 구현됐고, 74개의 개수를 가진 EnumSet은 JumboEnumSet 이 구현됐다.
+이는 EnumSet 의 구현부분 코드를 확인하면 더 명확한데,
+
+```java
+// 클라이언트가 호출한 allOf() 메서드
+// 확인하면 noneOf 메서드를 호출하는 것을 확인할 수 있는데,
+public static <E extends Enum<E>> EnumSet<E> allOf(Class<E> elementType) {
+    EnumSet<E> result = noneOf(elementType);
+    result.addAll();
+    return result;
+}
+
+// noneOf 케서드에서는 매개변수로 전달된 elementType 에 들어있는 열거형 데이터의 집합을 제네릭 와일드 카드를 이용해서 배열로 담아둔다.
+// 그리고 담아둔 데이터의 개수에 따라 RegualEnumSet, JumboEnumSet 을 상황에 맞춰 반환한다.
+public static <E extends Enum<E>> EnumSet<E> noneOf(Class<E> elementType) {
+    Enum<?>[] universe = getUniverse(elementType);
+    if (universe == null)
+        throw new ClassCastException(elementType + " not an enum");
+
+    if (universe.length <= 64)
+        return new RegularEnumSet<>(elementType, universe);
+    else
+        return new JumboEnumSet<>(elementType, universe);
+}
+```
+
+위처럼 상황에 맞춰 구현할 클래스를 직접 선택하여 반환하게 하는 것이 우리가 네 번째 장점으로 뽑은 것이다.
+
+다섯 번째 장점도 위에 설명한 바와 크게 다르지 않으니 우선 생략하고 <b>단점</b>을 보겠다.
+
+---
+
+<b>단점</b>
+
+첫 번째, 상속을 하려면 public이나 protected 생성자가 필요하니 정적 팩터리 메서드만 제공하면 하위 클래스를 만들 수 없다.
+정적 팩터리 메서드는 기존의 기본 생성자 등을 private 으로 묶어 구현하는 형태로 될 것이다.
+그렇게 될 경우, 본인을 상속한 자식 클래스에서 생성자에 의해 super(); 가 호출될 수 없게된다.
+즉, 상속을 할 수가 없다.
+하지만 이 제약은 상속(is-a) 보다 컴포지션(has-a)을 사용하도록 유도하며, 불변 타입으로 만들 수 있어서 오히려 장점으로 받아들여 진다.
+
+두 번째, 정적 팩터리 메서드는 프로그래머가 찾기 어렵다.
+이 단점은 내가 첫 번째 장점에 정리해뒀으니 패스 하겠다.
+
+> 아이템 1 에서 획득한 키워드
+> 
+> 1. BigInteger, BigDecimal
+> java.math 패키지의 하위 클래스이다.
+> 크기가 큰 정수를 다루기 위한 class 로, 특히 부동소수점에 의해 정확한 계산이 필요한 정수타입의 경우, BigDecimal 을 사용할 것을 추천한다.
+> 
+> 2. 플라이웨이트 패턴 (FlyWeight pattern), 브리지 패턴 (Bridge pattern)
+> 플라이웨이트 패턴: 캐싱의 일종으로 구조적 디자인 패턴 중 하나이다.
+> 같은 속성의 값으로 같은 인ㅅ
+
+--- 
+
