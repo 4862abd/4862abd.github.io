@@ -28,7 +28,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 ## ● 그래프로 알 수 있는 코드에 대한 정보는 무엇이 있을까요?
 
-![07](/assets/img/05.Functional-coding/09/07.png)
+![07](/assets/img/05.Functional-coding/09/07.PNG)
  
 <br/>
 <b>호출 그래프</b>의 구조이다.<br/>
@@ -58,7 +58,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 <br/>
 
-![08](/assets/img/05.Functional-coding/09/08.png)
+![08](/assets/img/05.Functional-coding/09/08.PNG)
 <br/>
 
 제목 그대로 이다.<br/>
@@ -109,7 +109,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 ## ● 요약: 그래프가 코드에 대해 알려주는 것.
 <br/>
 
-![10](/assets/img/05.Functional-coding/09/10.png)
+![10](/assets/img/05.Functional-coding/09/10.PNG)
 
 <b>유지보수성</b><br/>
 <br/>

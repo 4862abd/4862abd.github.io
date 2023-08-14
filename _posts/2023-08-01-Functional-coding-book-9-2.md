@@ -44,7 +44,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 이를 위해 할인해주는 코드를 추가하려 하는데 이를 구현하기에 앞서 두 가지 방법을 설명한다.<br/>
 <br/>
 
-![05](/assets/img/05.Functional-coding/09/05.png)
+![05](/assets/img/05.Functional-coding/09/05.PNG)
 
 #### 방법 1: 추상화 벽에 만들기
 

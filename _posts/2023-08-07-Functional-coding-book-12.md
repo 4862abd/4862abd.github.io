@@ -37,7 +37,7 @@ map, filter, reduce 를 코드로 직접 풀어서 구현한다.<br/>
 
 ## ● 함수형 도구: map
 
-![01](/assets/img/05.Functional-coding/12/01.png)
+![01](/assets/img/05.Functional-coding/12/01.PNG)
 
 <br/>
 map은 X(어떤 값의 집합) 값이 있는 배열을 Y(또 다른 값의 집합) 값이 있는 배열로 변환한다고 볼 수 있다.<br/>
@@ -66,7 +66,7 @@ map (customers, function (customer) {
 
 ## ● 함수형 도구: filter
 
-![02](/assets/img/05.Functional-coding/12/02.png)
+![02](/assets/img/05.Functional-coding/12/02.PNG)
 
 위 처럼 부정확한 값(null, undefined) 가 포함될 수 있는 상황을 피하려 한다.<br/>
 그러한 역할을 하는 함수를 filter 이다.<br/>
@@ -88,7 +88,7 @@ var emailListWithoutNulls = filter(allEmails, function(email) {
 
 ## ● 함수형 도구: reduce
 
-![03](/assets/img/05.Functional-coding/12/03.png)
+![03](/assets/img/05.Functional-coding/12/03.PNG)
 
 reduce는 다른 함수와 조금 다르다.<br/>
 누적하는 형태라는 것이 조금 다른 개념이다.<br/>

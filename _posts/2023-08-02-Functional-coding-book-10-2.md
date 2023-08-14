@@ -170,7 +170,7 @@ forEach 함수는 <b>함수를 인자로 받는 <span style="color: red;">고차
 
 ## ● 리팩터링: 함수 본문을 콜백으로 바꾸기
 
-![01](/assets/img/05.Functional-coding/10/01.png)
+![01](/assets/img/05.Functional-coding/10/01.PNG)
 
 이제 데이터가 입출력 되는 함수들의 예외상황에 로그를 남기는 로직을 추가하려 한다.<br/>
 try/catch 블록을 이용하여 로그를 남길 것이다.<br/>
