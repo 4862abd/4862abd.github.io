@@ -728,7 +728,7 @@ Cleaner 클래스는 자바 9 부터 추가되었다..<br>
 <i>추가: 2023-08-15 08:58</i><br>
 <br>
 
-> 아이템 8 에서 획득한 키워드<br>
+> 아이템 8 에서 획득한 키워드<br> 
 > <br>
 > System.runFinalizersOnExit, Runtime.runFinalizersOnExit?<br>
 > 위 두 메서드는 수집 대상 인스턴스의 finalize 를 동작시킨다.<br>
