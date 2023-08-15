@@ -1,11 +1,16 @@
 # 2장, 객체 생성과 파괴
 
 ### 아이템 목록
+
 1. 생성자 대신 정적 팩터리 메서드를 고려하라
 2. 생성자에 매개변수가 많다면 빌더를 고려하라
 3. private 생성자나 열거 타입으로 싱글턴임을 보증하라
 4. 인스턴스화를 막으려거든 private 생성자를 사용하라
-5. 
+5. 자원을 직접 명시하지 말고 의존 객체 주입을 사용하라
+6. 불필요한 객체 생성을 피하라
+7. 다 쓴 객체 참조를 해제하라
+8. finalizer와 cleaner 사용을 피하라
+9. try-finally 보다는 try-with-resources 를 사용하라
 
 ---
 
@@ -125,10 +130,8 @@ public static <E extends Enum<E>> EnumSet<E> noneOf(Class<E> elementType) {
 > 플라이웨이트 패턴: 캐싱의 일종으로 구조적 디자인 패턴 중 하나이다.
 > 같은 속성의 값으로 같은 인스턴스를 획득하려 하면, 임의로 지정한 저장소에서 해당 속성의 값을 가지는 인스턴스가 저장되어 있는지 확인한다.
 > 만약 인스턴스가 존재하면 해당 인스턴스의 참조값(주소) 를 반환하고, 없을 경우 인스턴스를 새로 획득하여 저장소에 저장해두고 후에 조회될 경우 반환한다.
-> 브리지 패턴: 관계가 없는 인터페이스 들을 연결하는 패턴이다.
-> 두 인터페이스를 구현해야 하는 상황이라면 하나의 인터페이스는 implements 하여 구현을 강제한다. (정적 메소드로 선언한 것 제외)
-> 그리고 오버라이딩 된 메소드에서 다른 인터페이스의 메소드를 호출한다.
-> 이렇게 연관이 없던 두 인터페이스 간의 연결이 구현으로 인해서 이루어지는 패턴이다.
+> 브리지 패턴: 두 개의 큰 클래스 혹은 밀접한 클래스들을 따로 구분하여 개발할 수 있게 하는 패턴이다.
+> 이는 구현 뿐 아니라 추상화에서도 접목할 수 있는 패턴이며 구분된 클래스들은 연관이 있으면서도 개별적으로 확장이 가능하다.
 
 --- 
 
@@ -324,10 +327,10 @@ public class FirstSingletonMainClass {
             // 클래스를 제네릭 와일드카드를 통해 가져오기
             Class<?> targetClass = FirstSingletonClass.class;
             
-            // 파라미터가 없고 private 으로 선언된 기본 생성자를 가져오기(NoSuchMethodException 발생 가능(메소드가 없는 경우 예외 던짐))
+            // 파라미터가 없고 private 으로 선언된 기본 생성자를 가져오기(NoSuchMethodException 발생 가능(메서드가 없는 경우 예외 던짐))
             Constructor<?> privateConstructor = targetClass.getDeclaredConstructor();
             
-            // setAccessible 메서드를 통해 private 등의 접근 제한자로 막힌 메소드의 접근을 허용 - 이 부분이 책에서 설명한 내용
+            // setAccessible 메서드를 통해 private 등의 접근 제한자로 막힌 메서드의 접근을 허용 - 이 부분이 책에서 설명한 내용
             privateConstructor.setAccessible(true);
             
             // newInstance() 메서드를 통해 Object 를 반환할 때, 명시적 박싱을 통해 원하는 클래스로 형변환
@@ -387,11 +390,296 @@ java.util.Collections 처럼 특정 인터페이스를 구현하는 객체를 �
 ## ● 아이템 5: 자원을 직접 명시하지 말고 의존 객체 주입을 사용하라
 
 만약 특정 클래스에 의존하는 멤버 변수가 있다고 해보자.
-특히 책에서는 이를 문자열 확인을 위해 바탕이 되는 데이터를 멤버 변수로 선언하여 예시를 든다.
+특히 책에서는 문자열 확인을 위해 바탕이 되는 참조 변수를 멤버 변수로 선언하여 예시를 든다.
 
-이러한 객체는 직접 구현, 호출할 수도 있지만 여러 곳에서 각 객체 별로 구현되는 경우도 있고, 직접적으로 사용되지 않는 경우도 있기에 초기화를 하는 방식에 다른 방식을 지원하고자 한다.
+이러한 객체는 클래스 별로 직접 구현하는 방법도 있지만 여러 곳에서 각 객체 별로 구현되는 경우도 있고, 직접적으로 사용되지 않는 경우도 있기에 초기화를 하는 방식에 차등을 주어 구현하고자 한다.
 바로 정적 유틸리티 클래스나 싱글턴 방식으로 구현하는 것.
-
-하지만 이렇게 사용하는 자원에 따라 동작이 달라지는 클래스에는 정적 유틸리티 클래스나 싱글턴 방식이 적합하지 않다.
+하지만 이렇게 사용하는 자원에 따라 동작이 달라지는 클래스에는 <b>정적 유틸리티 클래스나 싱글턴 방식이 적합하지 않다.</b>
 이 보다는 인스턴스를 획득할 때 생성자에 필요한 자원을 넘겨주는 방식이 낫다.
+즉, <b>DI</b> 를 활용하는 편이 낫다고 이야기 한다.
 
+```java
+public class SpellChecker {
+
+    private final Lexicon dictionary;
+
+    public SpellChecker(Lexicon dictionary) {
+        this.dictionary = Objects.requireNonNull(dictionary);
+    }
+
+    ...
+}
+```
+
+이러한 패턴을 <b>의존 객체 주입 패턴</b> 이라고 한다.
+토비의 스프링에서는 이를 활용한 패턴 중 하나로 <b>팩터리 메서드 패턴</b>을 이야기 하기도 했고 책에서도 짧게 설명을 한다.
+특히 DI에 의한 프레임워크라고 하는 스프링에서는 굉장히 중요한 개념이 될 것이다.
+
+> 핵심 정리
+>
+> 클래스가 내부적으로 하나 이상의 자원에 의존할 때,
+> 그 자원이 클래스의 동작에 영향을 준다면 싱글턴과 정적 유틸리티 클래스는 사용하지 않는 것이 좋다.
+
+---
+
+## ● 아이템 6: 불필요한 객체 생성을 피하라
+
+이번 아이템에서는 deprecated 된 문법을 몇 가지 소개한다.
+
+```java
+
+String s = new String("bikini");
+
+Boolean b = new Boolean(true);
+
+```
+
+우선 문자열의 경우 리터럴로 초기화된 문자열에 기반에 본인만의 저장소를 운영한다.
+또, 논리 자료형의 경우 생성자 대신 Boolean.valueOf(String) 팩터리 메서드를 사용하는 것이 좋다.
+그리고 생성 비용이 아주 비싼 경우도 있는데,
+
+```java
+static boolean isRomanNumeral (String s) {
+    return s.matches("^...");
+}
+```
+
+우리가 java에서 문자열의 정규표현식을 활용해 테스트를 진행할 때,
+자주 사용하는 것이 있는데 바로 Pattern 인스턴스이다.
+문자열의 matches 를 통해 내부적으로 인스턴스를 획득하게 되는 Pattern 은 인스턴스를 획득할 때마다 <b>유한 상태 기계</b>를 만들기 때문에 인스턴스 획득의 비용이 높다.
+
+> 유한 상태 기계?
+>
+> 특정 조건들에 의거하여 성능을 끌어올린 애플리케이션
+> 
+> 1. 유한한 상태를 가진다.
+> 2. 유한한 입력을 가진다.
+> 3. 초기값을 가진다.
+> 4. 입력에 따라 상태가 변화하는 상태 전이 함수가 존재한다.
+>
+> 입력 별 유한한 상태를 계산, 제한하여 이를 상수화 해놓고 애플리케이션의 성능을 끌어올리는 구현 방식을 유한 상태 기계라고 한다.
+
+그렇다면 이렇게 인스턴스 획득 비용이 비싼 경우 어떤 방식이 구현하기에 좋을까?
+책에서는 정적 상수형 변수로 선언, 초기화 하여 사용될 때마다 재사용 되는 것을 노렸다.
+그리고 인스턴스의 획득 자체가 비싸니 정적으로 상시 올려놓는 것이 아닌 지연 초기화 (Lazy Initialization) 를 통해, 획득 자체를 미뤄두다가 첫 호출 시 인스턴스를 획득하게 하는 것을 제안한다.
+하지만 지연 초기화는 코드를 복잡하게 만들 뿐 아니라 성능의 효율성을 크게 높이지 못 하는 경우가 많아서 추천하지 않는다.
+
+그래서 내가 생각한 방식은 이렇다.
+클래스 주체가 본인의 변수를 확실하게 알고 있다는 문제점을 고려했다.
+만약 해당 정규표현식을 비슷한 계층의 다른 서비스 로직, 도메인 에서도 활용해야 한다면, 상위 계층의 로직에서 DI 주는 방식도 고민해볼 것이다.
+
+또 책에서는 피해야할 안티 패턴을 몇 설명한다.
+<b>오토박싱 (Auto Boxing)</b> 을 예로 들었다.
+
+```java
+public static void main(String... args) {
+//    Long sum = 0L;    // takes: 5.997 sec
+    long sum = 0L;    // takes: 0.627 sec
+
+    for (long i = 0L; i < Integer.MAX_VALUE; i++) {
+        sum += i;
+    }
+}
+```
+
+위의 로직에서 Wrapper 클래스인 Long 을 사용하면 반복문의 기본 자료형으로 선언된 i와 다른 자료형으로 인해 반복문의 바디가 동작할 때마다 오토 박싱을 진행하게 된다.
+그로인한 실행 시간은 내가 주석으로 남긴 부분과 같다.
+정말 어마어마하게 오래걸리더라..
+
+
+> 아이템 6 에서 획득한 키워드
+>
+> 어댑터 패턴: 관계가 없는 인터페이스 들을 연결하는 패턴이다.
+> 두 인터페이스를 구현해야 하는 상황이라면 하나의 인터페이스는 implements 하여 구현을 강제한다. (정적 메서드로 선언한 것 제외)
+> 그리고 오버라이딩 된 메서드에서 다른 인터페이스의 메서드를 호출한다.
+> 이렇게 연관이 없던 두 인터페이스 간의 연결이 구현으로 인해서 이루어지는 패턴이다.
+
+---
+
+## ● 아이템 7: 다 쓴 객체 참조를 해제하라
+
+이번 아이템에서는 초반에 Stack 을 구현하는 코드를 보여주고 독자에게 메모리 누수가 일어날 법한 곳을 찾아보라고 한다.
+당신은 단 번에 찾았는가?
+
+<i>난 답지 보고 알아따...</>
+
+책에서 Stack을 구현할 때 pop 메서드에서 제거된 객체의 참조를 그대로 두었다.
+
+```java
+public Object pop() {
+    if (size == 0) {
+        throw new EmptyStackException();
+    }
+
+    // 이 부분에서 elements[--size] 에 해당하는 객체를 따로 선언, 초기화 하여 저장하고,
+    // Stack 자료형을 이루는 객체의 집합인 elements 에서 인덱스에 의한 참조를 해제해줘야 한다.
+
+    return elements[--size];
+}
+```
+
+책에서는 위의 주석 부분에서 참조를 해제해줘야 하는 구문에 한해 인덱스가 가리키는 값을 <b>null 로 처리</b> 한다.
+하지만 이렇게 null 로 처리하는 일은 예외적인 경우여야 하며 다 쓴 참조를 해제하는 가장 좋은 방법은 그 참조를 담은 변수를 유효 범위 (scope) 밖으로 밀어내는 것이라고 한다.
+그리고 이를 간단하게 설명하기 위해 <b>WeakHashMap</b> 을 이야기 하는데, 궁금해서 직접 구현해봤다.
+
+```java
+public class MainClass {
+    
+    public static void main(String... args) {
+
+        WeakHashMap<String, String> map1 = new WeakHashMap<>();
+        Map<String, String> map2 = new HashMap<>();
+
+        String key1 = "리터럴1";                           // 이건 weak reference 의 영향을 받지 않는다.
+        String key2 = new String("new 연산자");
+        
+        map1.put(key1, "100");
+        map1.put(key2, "200");
+        
+        map2.put(key1, "100");
+        // map2.put(key2, "200");                              // 이 주석을 풀면 put으로 key2의 참조가 다시 생긴다.
+                                                            // 즉, 다른 객체에 다시 참조를 건다면 WeakHashMap 의 참조도 잃지 않고 유지된다.
+        
+        key1 = null;
+        key2 = null;
+        
+        System.gc();
+
+        System.out.println("map1: " + map1);
+        System.out.println("map2: " + map2);
+
+    }
+
+}
+```
+
+> map1: {new 연산자=200, 리터럴1=100}
+> map2: {new 연산자=200, 리터럴1=100}
+
+map1에 
+이렇게 출력이 된다.
+이유는 WeakHashMap 이 약한 참조 (Weak Reference) 를 이용하기 때문이다.
+약한 참조란 참조를 하는 본인이 GC 의 대상이 될 수도 있다는 것을 의미한다.
+그래서 위에서 구현한 소스를 보면 WeakHashMap 인 map1에 put된 key2를 null로 하고 gc를 강제로 한 것을 보면 map1 안에서 해당 데이터가 사라진 것을 확인할 수 있다.
+하지만 이는 리터럴로 선언된 String 타입의 키에서는 적용되지 않고, 본인과 같은 키 값을 강한 참조 (String Reference) 하는 객체가 있다면 null로 처리해도 약한 참조 또한 사라지지 않는다.
+
+---
+
+## ● 아이템 8: finalizer와 cleaner 사용을 피하라,
+● 아이템 9: try-finally 보다는 try-with-resources 를 사용하라
+
+자바에서는 객체 소멸자로 <b>finalizer</b> 와 <b>cleaner</b> 를 제공한다.
+그 중 finalizer는 예측할 수 없고, 상황에 따라 위험할 수도 있으며 GC의 대상에서 우선순위도 밀린다.
+저자는 실제로 finalizer를 구현한 동료가 OOM을 뱉으며 죽는 애플리케이션을 뜯어보자 finalizer로 객체 소멸을 구현하였음에도 쓰레드 상 우선순위에 밀려 수 많은 객체가 제대로 gc 되지도 못하고 서버를 터트린 이야기를 해준다.
+심지어 finalizer 에서 예외가 발생하면 경고초자 출력하지 않는다.
+
+반면에 cleaner 는 자신을 수행할 스레드를 제어할 수 있다는 점에서 조금 낫다.
+하지만 여전히 백그라운드에서 수행되고 GC의 통제하에 있으니 즉각 수행되기는 보장할 수 없다.
+
+그럼에도 우리가 객체 소멸자를 구현해야 하는 상황을 두 가지 설명한다.
+
+1. 클라이언트가 객체 소멸 로직을 아예 구현하지 않아서 하긴 해야할 때(?)
+2. 네이티브 피어(객체) 에 대하여 객체가 소멸해야 함을 알릴 때
+
+1번은.. 뭐 실수로 까먹었다고 치자.
+2번은 조금 중요한 대목이다.
+
+네이티브란 키워드는 프로그래밍을 하다가 보면 자주 접할 수 있는 단어이다.
+보통 "다른 언어의" 라는 의미를 지니며 JPA 상에서도 네이티브 쿼리를 통해 기존 JPA 문법 상 맞는 쿼리가 아닌 이용하는 DB에 맞춘 쿼리를 작성할 수 있게 하는 기능도 있었다.
+이렇게 다른 언어로 작성된 객체같은 경우는 JVM의 GC가 정상적으로 자원을 회수하지 못할 가능성이 있다.
+이를 해결하기 위해 <b>cleaner 를 구현하고 try-with-resources 로 회수</b>하는 것이 좋다.
+
+```java
+import java.lang.ref.Cleaner;
+
+public class Office implements AutoCloseable {
+    
+    private static final Cleaner cleaner = Cleaner.create();
+    
+    // 청소가 필요한 자원, 절대 Office 를 참조해서는 안 된다.
+    private static class State implements Runnable {
+        // 쓰레기 개수
+        int numJunkPiles;
+        
+        State(int numJunkPiles) {
+            this.numJunkPiles = numJunkPiles;
+        }
+        
+        // close 메서드나 cleaner 가 호출한다.
+        @Override
+        public void run() {
+            System.out.println("사무실 청소");
+            numJunkPiles = 0;
+        }
+    }
+    
+    // 사무실의 상태, cleanable 과 공유한다.
+    private final State state;
+    
+    // cleanable 객체, 수거 대상이 되면 사무실을 청소한다.
+    private final Cleaner.Cleanable cleanable;
+    
+    public Office(int numJunkPiles) {
+        state = new State(numJunkPiles);
+        cleanable = cleaner.register(this, state);
+    }
+    
+    @Override
+    public void close() {
+        System.out.println("close()");
+        cleanable.clean();
+    }
+}
+
+...
+
+public static void main(String... args) {
+    
+    try(Office office = new Office(10)) {
+        System.out.println("office.toString(): " + office.toString());
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    System.out.println("--------------------------------------------");
+    
+    // 일반 try-catch 를 이용하면 Runnable 을 구현한 state 의 run 이 동작하지 않는다.
+    // 이는 AutoCloseable 를 구현한 취지에 맞지 않는 행동이기 때문이다.
+    Office office = new Office(10);
+    
+    try {
+        System.out.println("office.toString(): " + office.toString());
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        office.close();
+    }
+}
+```
+
+> office.toString(): item8finalizeAndCleaner.Office@2ff4f00f
+> close()
+> 사무실 청소
+> --------------------------------------------
+> office.toString(): item8finalizeAndCleaner.Office@7d417077
+> close()
+> 사무실 청소
+
+와 또 신기한 사실을 알아냈다.
+위의 코드는 책에서 설명한 cleaner를 구현한 클래스이고 이를 활성화하기 위해 try-with-resources 를 구현한 메인 메서드 이다.
+위 코드는 자바 11 환경에서 구현했던 코드였다.(사무실에서 짬이 날 때 작성한 코드이다.)
+<b>자바 11</b>에서는 AutoCloseable, Runnable 로 구현된 <b>run 메서드가 분명 동작하지 않았었다.</b>
+이를 위해 구현된 소스임을 분명 확인하고 내가 직접 구현했으니 기억한다.
+하지만 이 포스팅을 위해 다시 소스를 실행한 후 깜짝 놀랐다.
+<b>자바 17 에서는 AutoCloseable, Runnable 로 구현한 run 메서드도 동작한다.</b>
+이게 무슨 일인가
+jdk 버전 별로 차이가 많을 수 있다는 것은 알지만 최적화가 이렇게 이루어질 수도 있구나
+아이템 8과 9는 내가 다루기에 아직 지식이 모자른 것 같다.
+우선 jdk 11과 비교해가며 포스트를 수정해야 할것 같다.
+
+
+> 아이템 8 에서 획득한 키워드
+> 
+> System.runFinalizersOnExit, Runtime.runFinalizersOnExit?
+> 위 두 메서드는 수집 대상 인스턴스의 finalize 를 동작시킨다.
+> 하지만 스레드에 안전하지 않아 다른 객체에서 동시에 수집 대상 인스턴스를 참조하기 시작하면 교착이 발생할 수 있다.
