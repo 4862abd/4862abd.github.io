@@ -1,5 +1,5 @@
 ---
-title: 객체 생성과 파괴
+title: 아이템 2, 객체 생성과 파괴
 author: park
 date: 2023-08-15 09:04:00 +0800
 categories: [Java, Effective Java]
@@ -11,7 +11,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 ---
 
-# 2장, 객체 생성과 파괴
+# 아이템 2, 객체 생성과 파괴
 
 ### 아이템 목록
 
