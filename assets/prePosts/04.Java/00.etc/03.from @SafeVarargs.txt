@@ -1,0 +1,49 @@
+이제 @SafeVarargs 애너테이션의 정보가 담긴 공식 홈페이지를 확인하자.
+
+출처: [oracle] (https://docs.oracle.com/javase/8/docs/api/java/lang/SafeVarargs.html)
+
+> A programmer assertion that the body of the annotated method or constructor does not perform potentially unsafe operations on its varargs parameter.
+> 애너테이션이 달린 메서드나 생성자 메서드가 varargs 매개변수를 사용할 때 안전하지 않다는 개발자의 주장
+> 
+> Applying this annotation to a method or constructor suppresses unchecked warnings about a non-reifiable variable arity (vararg) type and suppresses unchecked warnings about parameterized array creation at call sites.
+> 이 주석을 메서드나 생성자 메서드에 적용하면 매개변수화된 배열 타입의 <b>비 구체화 변수</b>를 호출 단에서 경고 억제할 수 있다.
+
+
+자, 이게 무슨 말이냐.
+우선 <b>비 구체화 타입</b> 을 먼저 알고 넘어갈 필요가 있다.
+
+---
+
+## ● 비 구체화 타입
+
+우선 공식 문서를 먼저 보고 가자.
+
+> A reifiable type is a type whose type information is fully available at runtime.
+> 구체화 타입은 런타임 중 타입 정보를 완전히 사용 가능한 타입을 의미한다.
+> This includes primitives, non-generic types, raw types, and invocations of unbound wildcards.
+> 여기에는 초기의, 제네릭이 아닌, raw 타입(제네릭 타입을 받는 타입에 타입 매개 변수를 사용하지 않은 것, ex) List list = ...), 그리고 결합되지 않은 와일드카드가 포함된다.
+> 
+> Non-reifiable types are types where information has been removed at compile-time by type erasure — invocations of generic types that are not defined as unbounded wildcards
+> 비 구체화 타입은 컴파일 시에 type erasure 에 의해 타입의 정보가 지워지는 유형이고, 결합되지 않은 와일드카드 처럼 정의되지 않은 실시를 의미한다.
+> A non-reifiable type does not have all of its information available at runtime.
+> 비 구체화 타입은 런타임 시에 완전하게 사용 가능한 정보를 가지지 않는다.
+
+출처: [oracle] (https://docs.oracle.com/javase/tutorial/java/generics/nonReifiableVarargsType.html)
+
+이게 뭔 소리야?
+키워드를 어마어마 하게 던진다.
+단 3 줄 만에.
+
+우선 구체화 타입 먼저 보자.
+런타임 중 타입 정보를 완전히 사용 가능하다.
+그리고 예시로 나온 것을 보면 런타임 중에도 타입을 확실히 알 수 있는 것을 의미하고 있다.
+
+비 구체화 타입은 반대이다.
+컴파일 시에 타입의 정보가 지워진다.
+그리고 런타임에도 사용할 타입의 정보를 완전히 가지지 않는다.
+슬슬 제네릭 공부할 때 나왔던 개념들인 것이 얼핏 생각난다.
+마치 제네릭 타입을 선언하면 컴파일 후 Object 타입으로 바뀌는 것처럼.
+
+그러면 문서를 더 읽어보자.
+
+> 
