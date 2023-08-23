@@ -1,0 +1,129 @@
+우선 공식 doc 문서 기반의 대답을 요청한 GPT 의 결과부터 확인하자.
+
+> 구현된 메서드는 다형성을 활용해서 런타임 중 어떤 것이 실행될지 선택된다.
+> 그 과정은 다음과 같다.
+>
+> <b>Method Resolution</b>
+> 객체의 메서드를 호출할 때, JVM은 어떤 특정 구현 메서드가 실행될지 알아내야 한다.
+> 이 과정을 Method Resolution 이라고 한다.
+> JVM은 객체 클래스의 메서드의 시그니처를 이용해 찾아낸다.
+>
+> <b>Dynamic Method Lookup</b>
+> Method Resolution 은 동적인데, 이는 참조에 정의된 타입 뿐 아니라 객체의 런타임에 고려한다는 것이다.
+> 이건 다형성이 동작하는 중요한 점이다.
+> 만약 메서드가 서브 클래스에 의해 오버라이딩 되었다면 JVM은 서브 클래스에 구현된 정확한 것을 찾아낸다.
+> 
+> <b>Linking</b>
+> 구현된 메서드가 확실하게 결정되면 JVM 은 Linking 을 진행한다.
+> 이 과정은 동의 되었는지 확인하는 것을 수반하며, 참조의 상징을 해결하며, 메서드 실행을 위한 준비를 한다.
+> JVM 은 클래스에 메서드가 컨테이닝 된 것을 확신하고, 확인하며 필요한 것을 초기화한다.
+> 
+> <b>Method Invocation</b>
+> 메서드가 풀이되고 링크되면 JVM 은 실재로 메서드의 바이트코드 구조를 실행한다.
+>
+> 이런 모든 구조는 다형성을 구현하고 고등 차원 측면을 개발자가 몰라도 작업할 수 있게 해준다.
+
+[Method Resolution] (https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-5.html#jvms-5.4.3.3)
+[Dynamic Method Lookup, Linking] (https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-2.html#jvms-2.6.3)
+[Method Invocation] (https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-2.html)
+
+> Method Invocation
+> 이 부분은 공식 홈페이지에서도 정말 많은 부분에서 다룬다.
+> 리턴, 동기화 등에 영향이 있으니 직접 확인해보는 것을 추천한다.
+
+자, 그럼 우리가 알고 싶었던 점을 다시 확인하자.
+<b>
+varargs 매개변수(이하 가변인자) 는 컴파일 시 배열 타입의 매개변수로 바뀐다고 하더라도,
+어떻게 배열타입이 아닌 여러 동일 타입의 매개변수를 배열화 하는가?
+</b>
+
+자, <b>디컴파일러</b>를 다시 켜자.
+가변인자를 받는 메서드를 호출하는 부분과 해당 메서드의 .class 파일을 디컴파일 해보자.
+
+### 컴파일 이전
+
+```java
+
+// 가변인자를 선언한 메서드를 호출하는 메서드
+public long sumAndCompare() {
+	MathClass mathClass = new MathClass();
+	Integer a = 1;
+	Integer b = 2;
+	Integer c = 3;
+	Integer d = 4;
+	Integer e = 5;
+	Integer f = 6;
+
+	// 지역 변수로 선언, 초기화한 데이터를 매개변수로 이용
+	long alphabetResult = mathClass.sum(a, b, c, d, e, f);
+        
+	// 지역변수를 직접 배열화 하여 매개변수로 이용
+	int[] intArray = new int[] { a, b, c, d, e, f };
+	long arrayResult = mathClass.sum(intArray);
+        
+	return Math.max(alphabetResult, arrayResult);
+}
+
+...
+
+public class MathClass {
+	public long sum(int... intArgs) {
+		// 임의로 0으로 초기화
+		BigDecimal result = new BigDecimal(0L);
+		for (int arg : intArgs) {
+			result = result.add(BigDecimal.valueOf(arg));
+		}
+
+        		return result.longValue();
+    	}
+}
+
+```
+
+### 컴파일 이후
+
+```java
+
+// 가변인자를 선언한 메서드를 호출하는 메서드
+public long sumAndCompare() {
+    	MathClass mathClass = new MathClass();
+    	Integer a = Integer.valueOf(1);
+    	Integer b = Integer.valueOf(2);
+    	Integer c = Integer.valueOf(3);
+    	Integer d = Integer.valueOf(4);
+    	Integer e = Integer.valueOf(5);
+    	Integer f = Integer.valueOf(6);
+
+	// 네?
+    	long alphabetResult = mathClass.sum(new int[] { a.intValue(), b.intValue(), c.intValue(), d.intValue(), e.intValue(), f.intValue() });
+
+    	int[] intArray = { a.intValue(), b.intValue(), c.intValue(), d.intValue(), e.intValue(), f.intValue() };
+    	long arrayResult = mathClass.sum(intArray);
+
+    	return Math.max(alphabetResult, arrayResult);
+}
+
+...
+
+public class MathClass {
+	  public long sum(int[] intArgs) {
+    		BigDecimal result = new BigDecimal(0L);
+    		for (int arg : intArgs) {
+      			result = result.add(BigDecimal.valueOf(arg));
+    		}
+
+    		return result.longValue();
+  	}
+}
+
+```
+
+<b style="color: red;">그렇다.</b>
+Java 는 컴파일 언어이다.
+컴파일 하면서 다 처리한다.
+메서드 Signature 중 가변인자를 선언한 메서드는 자동으로 배열 매개변수로 바뀌고,
+해당 메서드를 호출하는 메서드는 new 연산자를 통해 매개변수로 전달하는 변수들을 관리하는 배열로 바뀐다.
+
+이걸 위해서 정말 많이 돌아왔다.
+어제 디컴파일러 돌릴 때 .class 파일 하나만 더 확인할 걸.
+역시 사람은 꼼꼼해야 한다.
