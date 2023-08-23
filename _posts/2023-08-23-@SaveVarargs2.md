@@ -58,7 +58,9 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 <br>
 
 [Method Resolution] (https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-5.html#jvms-5.4.3.3)
+
 [Dynamic Method Lookup, Linking] (https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-2.html#jvms-2.6.3)
+
 [Method Invocation] (https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-2.html)
 
 <br>
@@ -186,4 +188,4 @@ Java 는 <b>컴파일 언어</b> 이자 인터프리터 언어의 특징을 가�
 역시 사람은 꼼꼼해야 한다.<br>
 <br>
 <br>
-... ClassLoader 파보고 싶었는데, 이번 기회는 개념만 잡고 가고, 일단 @SaveVarargs 를 정리하자.<br>
+ClassLoader 파보고 싶었는데, 이번 기회는 개념만 잡고 가고, 일단 @SaveVarargs 를 정리하자.<br>
