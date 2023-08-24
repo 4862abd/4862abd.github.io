@@ -1,7 +1,7 @@
 ---
 title: 3장 외전, Set.of 메서드의 동작원리를 찾아서... 3편
 author: park
-date: 2023-08-24 18:10:00 +0800
+date: 2023-08-24 18:15:00 +0800
 categories: [Java, Effective Java]
 tags: [typography]
 math: true
