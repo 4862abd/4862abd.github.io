@@ -1,5 +1,5 @@
 ---
-title: 3장 외전, Set.of 메서드의 동작원리를 찾아서... 1편
+title: 3장 외전, Set.of 메서드의 동작원리를 찾아서... 1편, @SaveVarargs
 author: park
 date: 2023-08-22 18:36:00 +0800
 categories: [Java, Effective Java]
@@ -11,7 +11,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 ---
 
-# 3장 외전, Set.of 메서드의 동작원리를 찾아서... 1편
+# 3장 외전, Set.of 메서드의 동작원리를 찾아서... 1편, @SaveVarargs
 
 ### 소제목 목록
 
