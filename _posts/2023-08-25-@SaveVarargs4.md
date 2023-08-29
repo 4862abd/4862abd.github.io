@@ -41,10 +41,10 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 > In addition to the usage restrictions imposed by its @Target meta-annotation,<br>
 > @Target 메타 주석에 의해 주어진(겹쳐진) 사용 제한 외에도,<br>
 > <br>
-> compilers are required to implement additional usage restrictions on this annotation type;<br>
+> compilers are required to implement additional usage restrictions on this annotation type<br>
 > 컴파일러는 이 애너테이션을 위해 추가의 사용 제한을 필요로 한다.<br>
 > <br>
-> it is a compile-time error if a method or constructor declaration is annotated with a @SafeVarargs annotation, and either:...<br>
+> it is a compile-time error if a method or constructor declaration is annotated with a @SafeVarargs annotation, and either...<br>
 > 만약 메서드나 생성자 메서드 정의에 @SafeVarargs 애너테이션이 부여되면 컴파일 시간 에러이다, 그리고...<br>
 
 <br>
