@@ -15,18 +15,17 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 ### 아이템 목록
 
-10. equals 는 일반 규약을 지켜 재정의하라<br>
-11. equals 를 재정의하려거든 hashCode 도 재정의하라<br>
-12. toString 을 항상 재정의하라<br>
-13. clone 재정의는 주의해서 진행하라<br>
-14. Comparable 을 구현할지 고려하라<br>
+아이템 10. equals 는 일반 규약을 지켜 재정의하라<br>
+아이템 11. equals 를 재정의하려거든 hashCode 도 재정의하라<br>
+아이템 12. toString 을 항상 재정의하라<br>
+아이템 13. clone 재정의는 주의해서 진행하라<br>
+아이템 14. Comparable 을 구현할지 고려하라<br>
 
 ---
 
 ## ● 아이템 10: equals 는 일반 규약을 지켜 재정의하라
 
 우선 equals 를 재정의하지 않는 상황을 나열한다.<br>
-<br>
 
 1. 각 인스턴스가 본질적으로 고유하다.<br>
     ㄴ ex. Thread<br>
@@ -51,15 +50,18 @@ public boolean equals(Object o) {
 
 <br>
 
-equals 를 재정의 해야 하는 상황은, <b>"상위 클래스의 equals 가 논리적 동치성을 비교하도록 재정의되지 않았을 때"</b> 이다.
-물론 이러한 클래스도 같은 값의 인스턴스가 둘 이상 생성되지 않음을 보장하는 <b>인스턴스 통제 클래스</b> 는 equals 를 재정의 하지 않아도 된다고 한다.
+equals 를 재정의 해야 하는 상황은, <b>"상위 클래스의 equals 가 논리적 동치성을 비교하도록 재정의되지 않았을 때"</b> 이다.<br>
+물론 이러한 클래스도 같은 값의 인스턴스가 둘 이상 생성되지 않음을 보장하는 <b>인스턴스 통제 클래스</b> 는 equals 를 재정의 하지 않아도 된다고 한다.<br>
+<br>
 
-> <b>인스턴스 통제 클래스 (아이템 1)</b>
->
-> 특징: private 생성자, static final
-> Enum 포함
+> <b>인스턴스 통제 클래스 (아이템 1)</b><br>
+><br>
+> 특징: private 생성자, static final<br>
+> Enum 포함<br>
 
-equals 를 재정의 할 때의 규약은 이러하다.
+<br>
+equals 를 재정의 할 때의 규약은 이러하다.<br>
+<br>
 
 1. 반사성 (Reflexivity)
 2. 대칭성 (Symmetry)
@@ -67,21 +69,191 @@ equals 를 재정의 할 때의 규약은 이러하다.
 4. 일관성 (Consistency)
 5. null - 아님
 
-우선 1번의 반사성과 5번의 null - 아님은 왠만하면 문제가 발생할 일이 없다.
-<b>반사성</b> 같은 경우, null 이 아닌 모든 참조 값 x 에 대해, x.equals(x) 는 true 다.
-즉, 자기는 자기와 같아야한다.
-이건 굳이 안 짚어도 코드 상 문제가 있는게 아니면 넘어가도 된다.
-5번 또한 마찬가지이다.
-
-우리는 2, 3, 4 번을 유심히 볼 필요가 있다.
+우선 1번의 반사성과 5번의 null - 아님은 왠만하면 문제가 발생할 일이 없다.<br>
+먼저 확인하고 넘어가자.<br>
+<br>
 
 ---
 
-<b>대칭성 (Symmetry)</b>
+### 반사성
 
+<b>null 이 아닌 모든 참조 값 x 에 대해, x.equals(x) 는 true 다.</b><br>
+<br>
+즉, 자기는 자기와 같아야한다.<br>
+이건 굳이 안 짚어도 코드 상 문제가 있는게 아니면 넘어가도 된다.<br>
 
+### null - 아님
 
+<b> null 이 아닌 모든 참조 값 x 에 대해, x.equals(null) 은 false 다.</b><br>
+<br>
+5번 또한 마찬가지이다.<br>
+인스턴스 생성이 확정된 객체가 null 과 같을 수 없기 때문이다.<br>
+<br>
+그리고 우리는 2, 3, 4 번을 유심히 볼 필요가 있다.<br>
 
+---
+
+### 대칭성 (Symmetry)
+
+<b>null 이 아닌 모든 참조 값 x, y 에 대해, x.equals(y) 가 true 면 y.equals(x) 도 true 이다.</b><br>
+<br>
+즉, 내가 너와 같다면, 너도 나와 같아야 한다.<br>
+간단하고 당연해 보이는 건가?<br>
+대칭성은 어긋나기 쉬운 규약이다.<br>
+코드로 짚고 넘어가자.<br>
+<br>
+
+```java
+
+public final class CaseInsensitiveString {
+
+    private final String s;
+    private final int n;
+    private final float i;
+
+    private String s2;
+
+    public CaseInsensitiveString(String s) {
+        this.s = Objects.requireNonNull(s);
+    }
+
+    // 대칭성 위배!
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof CaseInsensitiveString) {
+            return s.equalsIgnoreCase(
+                ((CaseInsensitiveString) o).s
+            );
+        }
+
+        if (o instanceof String) {
+            return s.equalsIgnoreCase((String) o);
+        }
+
+        return false;
+    }
+}
+
+```
+
+<br>
+위 코드에서 무엇이 대칭성을 위배 했을까?<br>
+분명 CaseInsensitiveString 클래스 본인의 값을 넣어도 동치성을 비교를 해줄 것이고, 문자열을 넣어도 비교를 해줄 것이다.<br>
+<br>
+x.equals(y) = true ? y.equals(x) : false;<br>
+<br>
+이 삼항 방정식에서 틀린 부분은 y.equals(x) 가 성립하지 않는다는 것이다.<br>
+<b>위 클래스는 String 을 직접 비교하여 논리값을 반환</b>한다.<br>
+그렇다면 <b>반대로 String 이 CaseInsensitiveString 클래스를 받아서 동치성 비교를 할 수 있을까?</b><br>
+절대 아니다.<br>
+즉, 클래스 본인은 String 을 알고 있지만, 직접적인 비교 대상이 되는 String 은 위 클래스를 모르고 있다.<br>
+<br>
+<b>'음? 그러면 모든 동치 비교에 비교 연산자가 성립이 안되잖아?'</b><br>
+책에서 위 구문을 보고 내가 처음 든 생각이었다.<br>
+'아니, int 를 가지고 있어서 비교하면 int 는 그 클래스를 모를 것이고, float 도 마찬가지 일텐데, 그러면 equals 를 어떻게 재정의하지?'<br>
+정말 <b style="color: red;">짧게 생각하고 생긴 질문</b>이었다.<br>
+<br>
+위 코드에서 보여주려는 예시는 <b>특정 클래스가 동치성을 비교하기 위해 전혀 다른 타입의 값을 넣어버린 상황</b>인 것이다.<br>
+논리적 동치 관계를 파악하기 위해선 본인, 혹은 책에서 설명한 것처럼 상위 클래스를 상속, 구현하는 서브 클래스가 그 비교 대상이 될 것이다.<br>
+물론 때에 따라 비교 역할을 맡은 다른 클래스에 위임하는 경우도 있을 것이다.<br>
+이는 추후 아이템 11 에서 더 설명이 나올 것이다.<br>
+
+하지만 java 라이브러리 내에서도 이를 어긴 클래스가 하나 있었는데..<br>
+바로 <b>java.sql.Timestamp</b> 이다.<br>
+Timestamp 는 <b>java.util.Date 를 상속</b>한 시간 관리 클래스이다.<br>
+특히 JPA 와 PostGreSQL 을 연동했던 프로젝트에서 시간 관리용 필드로 직접 사용한 적이 있어서 책에서 나왔을 때 반가운 예시였다.<br>
+하지만 Timestamp 는 대칭성을 어긴 대표적인 클래스이다.<br>
+<br>
+그 이유는 <b style="color: blue;">6 개의 필드</b>로 시간을 관리하는 <b style="color: blue;">Date</b> 와 달리 Date 를 상속하면서 <b style="color: red;">나노초 필드를 추가</b>해 관리하는 클래스가 <b style="color: red;">Timestamp</b> 이기 때문이다.<br>
+<br>
+즉, is - a 관계가 성립하지 않는다.<br>
+둘이 다루는 필드가 다르기 때문.<br>
+Timestamp 클래스의 equals 를 확인하면,<br>
+
+```java
+
+...
+
+// Timestamp 의 equals 메서드
+public boolean equals(Timestamp ts) {
+    if (super.equals(ts)) {
+        if  (nanos == ts.nanos) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+...
+
+```
+
+super.equals() 즉, Date 의 equals 먼저 호출하여 확인한다.<br>
+그 후, 본인이 관리하는 nonos 필드를 비교한다.<br>
+만약 모든 매개변수를 0으로 초기화 하고 서로의 eqauls 로 서로의 동치를 비교하면<br>
+<br>
+
+> System.out.println(date.equals(timestamp));<br>
+> 출력: true<br>
+> System.out.println(timestamp.equals(date));<br>
+> 출력: false<br>
+
+<br>
+이 두 클래스를 같이 이용한다면 정상적으로 동작할 수 없다.<br>
+<br>
+
+### 추이성
+
+<b>null 이 아닌 모든 참조 값 x, y, z 에 대해, x.equals(y) 가 true 이고 y.equals(z) 가 true 이면 x.equals(z) 도 true 이다.</b><br>
+<br>
+즉, 첫 번째 객체와 두 번째 객체가 같고, 두 번째 객체가 세 번째 객체와 같을 때, 첫 번째 객체와 세 번째 객체도 같아야 한다.<br>
+쉬워보이는 조건 중 하나이다.<br>
+하지만 위의 Timestamp 처럼 상속을 한 후, 필드를 추가하는 상황을 예상해보자.<br>
+물론 Timestamp 는 추이성을 인식하고 super.equals(ts) 먼저 동작을 하게 했다.<br>
+하지만 만약에 저 코드를 사용하지 않고 Timestamp 에서 추가된 본인의 필드를 모르는 Date 의 equals 를 그대로 사용한다면,<br>
+
+```java
+
+public static void main(String... args) {
+    Timestamp timestamp1 = new Timestamp(0, 0, 0, 0, 0, 0, 444);  // 마지막 매개변수는 나노초를 관리하는 필드에 저장된다.
+    Date date = new Date(0, 0, 0, 0, 0, 0);
+    Timestamp timestamp2 = new Timestamp(0, 0, 0, 0, 0, 0, 99999);
+
+    System.out.println(timestamp1.equals(date));
+    System.out.println(date.equals(timestamp2));
+    System.out.println(timestamp1.equals(timestamp2));
+}
+
+```
+
+> 출력<br>
+> <br>
+> true<br>
+> true<br>
+> true<br>
+
+<br>
+Timestamp 에서 관리하는 나노초를 비교하는 구문을 이용하지 않는다면 벌어질 일이다.<br>
+비교에 대한 출력 자체는 모두 true 를 뱉어낼 것이다.<br>
+하지만 실제로 timestamp1 과 timestamp2 가 관리하는 나노초 필드는 전혀 다른 값을 나타낼 것이다.<br>
+이게 우리가 SOLID 에서 OCP 를 지키는 대표적인 이유이다.<br>
+<br>
+
+> OCP: 개방폐쇄원칙, 확장에는 개방적이게, 변경에는 패쇄적이게<br>
+
+---
+
+### 일관성
+
+<b>null 이 아닌 모든 참조 값 x, y 에 대해, x.equals(y) 를 반복해서 호출하면 항상 true 를 반환하거나 항상 false 를 반환한다.</b><br>
+<br>
+이 규약도 어려운 규약 자체는 아니다.<br>
+하지만 중요한 개념은 <b>불변 객체</b>라는 상황에서 다를 수 있다는 점이다.<br>
+불변 객체는 한번 true 가 나온 두 인스턴스라면 어떤 상황에서도 false 가 반환되면 안된다.<br>
+<br>
 
 
 > 아이템 10 에서 획득한 키워드<br>
@@ -91,597 +263,4 @@ equals 를 재정의 할 때의 규약은 이러하다.
 
 --- 
 
-## ● 아이템 2: 생성자에 매개변수가 많다면 빌더를 고려하라
 
-정적 팩터리 메서드의 단점을 먼저 이야기 한다.<br>
-초기화에 필요한 매개변수가 많아지는 생성자의 경우 대응하기 어려워 진다는 것이다.<br>
-<br>
-그에따라 몇 해결 방법을 제안하는데, 빌더 패턴이 등장하기 전까지는 모두 그냥저냥한 패턴이다.<br>
-<br>
-패턴 1. <b>점층적 생성자 패턴 (Telescoping Constructor Pattern)</b><br>
-<br>
-매개변수가 필요한 상황, 책에서는 멤버 변수로 선언된 모든 상황을 설명하려 하는 것 같다.<br>
-그렇게 될 경우 생성자 메서드가 오버로드 되어 생성될 개수는 멤버 변수로 만들 수 있는 집합의 경우의 수에 해당한다.<br>
-<br>
-정말 너무 많은 수가 등장 할 수 있다.<br>
-그리고 이렇게 선언된 생성자 메서드의 경우 순서에 따라 데이터의 역할이 굉장히 큰 변수를 만들 수 있다.<br>
-이는 일반 개발자가 소스 코드를 확실하게 파악해야 하며 개발에도, 유지보수에도 어려움을 겪을 가능성이 크다.<br>
-<br>
-<b>즉, 효율성, 가독성이 땅을 친다.</b><br>
-<br>
-패턴 2. <b>자바빈즈 패턴 (JavaBeans Pattern)</b><br>
-<br>
-쉽게 생각하면 인스턴스를 획득한 후, 수정자 메서드 (setter) 를 통해 필요한 모든 값을 바인드 해주는 패턴이다.<br>
-내가 근무할 때 많이 사용했던 패턴이기도 하고 제일 무난하다고 생각했다.<br>
-하지만 책에서 설명하는 단점이 여럿 있다.<br>
-<br>
-
-1. 우선 객체 하나를 위해 수 많은 메서드를 호출해야 한다.<br>
-2. 객체가 완전히 생성되기 전까지는 <b>일관성 (consistency)</b> 이 무너진 상태에 놓인다.<br>
-    ㄴ 계속해서 객체가 바뀌어야 하기 때문.<br>
-3. 클래스를 불변으로 만들 수 없다.<br>
-    ㄴ 불변이라고? 그러면 단점 2번이 성립할 수 없고, 애초에 자바빈즈 패턴이 성립하지 못 한다.<br>
-
-<br>
-이러한 자바빈즈 패턴의 문제점을 위해 생성이 끝난 객체를 수동으로 얼리고 (freezing) 얼리기 전에는 사용할 수 없게 하는 방법도 있다고 한다.<br>
-이 방법은 이번 아이템에서 내가 찾아내지 못한 방법이다.<br>
-내가 발표자가 아니라면 꼭 질문에 넣을 것이다. ^^<br>
-<br>
-패턴 3. <b>빌더 패턴 (Builder Pattern)</b><br>
-<br>
-드디어 책에서 설명하고 하는 패턴이다.<br>
-위 패턴을 보고 여태 롬복에서 제공하는 @Builder  애노테이션이 같은 역할을 한다고 믿었다.<br>
-하지만 @Builder 애노테이션으로 생성되는 소스를 디컴파일러를 통해 확인하니 빌더패턴과 다르게 단순히 모든 멤버 변수를 매개 변수로 받는 생성자 메서드를 추가하는 것이었다.<br>
-<br>
-음... 하지만 디컴파일을 통해 생성된 코드와 다르게 몇 메서드가 추가된 것을 보면 내가 삽질을 덜 한 것일 것 같다.<br>
-우선 빌드 패턴의 소스를 보자.<br>
-
-```java
-public class BuilderPatternClass1 {
-    // 필수
-    private final int a;
-    private final int b;
-    // 선택
-    private final int c;
-    private final int d;
-    private final int e;
-    
-    private BuilderPatternClass1(Builder builder) {
-        this.a = builder.a;
-        this.b = builder.b;
-        this.c = builder.c;
-        this.d = builder.d;
-        this.e = builder.e;
-    }
-    
-    public static class Builder {
-        // 필수
-        private final int a;
-        private final int b;
-        
-        // 선택
-        private int c;
-        private int d;
-        private int e;
-        
-        public Builder(int a, int b) {
-            this.a = a;
-            this.b = b;
-        }
-        
-        public Builder c(int c) {
-            this.c = c;
-            return this;
-        }
-        
-        public Builder d(int d) {
-            this.d = d;
-            return this;
-        }
-                
-        public Builder e(int e) {
-            this.e = e;
-            return this;
-        }
-        
-        public BuilderPatternClass1 build() {
-            return new BuilderPatternClass1(this);
-        }
-    }
-}
-
-...
-
-public class MainClass {
-
-    public static void main(String... args) {
-        
-        BuilderPatternClass1 builderPatternClass1 = new BuilderPatternClass1
-                .Builder(12, 8)
-                .c(100)
-                .d(200)
-                .e(300)
-                .build();
-    }
-
-}
-```
-
-우선 특징 몇 가지를 살펴보자.<br>
-<br>
-
-1. Builder 를 매개변수로 하는 생성자 메서드가 private 으로 선언되어 있다는 점<br>
-2. 정적 중첩 클래스로 Builder 로 정의되어 있다는 점<br>
-3. 모든 멤버 변수가 final 로 선언되어 함부로 변경할 수 없는 불변객체가 되었다는 점<br>
-4. Builder 클래스 내에 build 메서드가 상위 클래스의 생성자 메서드를 호출한다는 점 (의존성이 강하다.)<br>
-
-<br>
-우선 3번 특징에 의하여 한 번 만들어진 BuilderPatternClass1 클래스의 인스턴스는 <b>불변</b>이다.<br>
-그리고 한 번 인스턴스를 생성할 때 메서드를 이어지듯 연결하여 사용할 수 있는데, 이를 <b>플루언트 API (Fluent API)</b>, 혹은 <b>메서드 연쇄 (Method Chaining)</b> 이라고 한다.<br>
-그리고 1번, 2번, 4번의 특징이 섞인 것이 내가 예시로 놓은 MainClass 클래스의 main 메서드에서 새로 인스턴스를 얻는 과정의 그것이다.<br>
-직접 new 예약자에 의해 호출되는 것은 정적 중첩 클래스 내부의 Builder 메서드 이다.<br>
-그 후 1번의 특징처럼 private 으로 선언된 멤버 변수를 메서드를 통해 수정하는 모습을 보인다.<br>
-그리고 build 메서드를 통해 private 으로 정의되고 Builder 를 매개변수로 받는 BuilderPatternClass1 클래스의 생성자 메서드를 호출한다.<br>
-이로서 우리는 인스턴스를 얻을 수 있다.<br>
-<br>
-자바의 빌더 패턴은 파이썬과 자바스크립트의 선택적 매개변수를 따라한 것이라고 한다.<br>
-하단은 자바스크립트의 선택적 매개변수의 예시 코드이다.<br>
-
-```javascript
-function choosableParameter(a, b = {}, c = null) {
-    ...
-}
-```
-
-아이템 2의 마지막 부분에 재귀적 타입 한정을 이용하는 클래스를 구현했는데, 이는 정리할 시간이 조금 부족할 것 같아 생략한다.<br>
-<br>
-
-> 아이템 2에서 획득한 키워드<br>
-> <br>
-> <b>공변반환 타이핑 (covariant return typing)</b><br>
-> 하위 클래스의 메서드가 상위 클래스의 메서드가 정의한 반환 타입이 아닌 그 하위 타입을 반환하는 기능.<br>
-{: .prompt-tip }
-
----
-
-## ● 아이템 3: private 생성자나 열거 타입으로 싱글턴임을 보증하라,
-## ＋ 아이템 4: 인스턴스화를 막으려거든 private 생성자를 사용하라
-
-<br>
-4번 아이템은 내용이 많지 않기도 하고, 싱글턴에도 적용할 수 있어 합쳤다.<br>
-우선 자바빈으로 등록하지 않고 싱글턴을 만들 수 있는 방법을 몇 가지 나열하겠다.<br>
-<br>
-public static final 필드 방식의 싱글턴<br>
-
-```java
-public class FirstSingletonClass {
-    
-    public static final FirstSingletonClass INSTANCE = new FirstSingletonClass();
-    private FirstSingletonClass() {
-        System.out.println("이거 실행되면 안되는데 FirstSingletonClass");
-    }
-
-}
-```
-
-우선 기본 생성자 메서드를 private 으로 정의한 상태이다.<br>
-그리고 인스턴스는 static final 예약자를 통하여 싱글턴임을 보장하는 방식이다.<br>
-<br>
-하지만 이 방법은 리플렉션 API인 AccessibleObject.setAccessible 을 사용해 private 생성자가 호출될 수 있다.<br>
-<br>
-적용 예시<br>
-
-```java
-
-public class FirstSingletonMainClass {
-    
-    public static void main(String... args) {
-        FirstSingletonClass firstSingletonClass = FirstSingletonClass.INSTANCE;
-        firstSingletonClass.setString("무야호~");
-        firstSingletonClass = FirstSingletonClass.INSTANCE;
-        System.out.println("그만큼 신나신 거지~ " + firstSingletonClass.getString());
-
-        // private 생성자를 reflect 를 통해 접근하기
-        FirstSingletonClass isNotAgreedInstance = null;
-        
-        try {
-            // 클래스를 제네릭 와일드카드를 통해 가져오기
-            Class<?> targetClass = FirstSingletonClass.class;
-            
-            // 파라미터가 없고 private 으로 선언된 기본 생성자를 가져오기(NoSuchMethodException 발생 가능(메서드가 없는 경우 예외 던짐))
-            Constructor<?> privateConstructor = targetClass.getDeclaredConstructor();
-            
-            // setAccessible 메서드를 통해 private 등의 접근 제한자로 막힌 메서드의 접근을 허용 - 이 부분이 책에서 설명한 내용
-            privateConstructor.setAccessible(true);
-            
-            // newInstance() 메서드를 통해 Object 를 반환할 때, 명시적 박싱을 통해 원하는 클래스로 형변환
-            // InvocationTargetException: invoke 시에 메서드에서 발생한 exception 이 마치 invoke 구문에서 발생한 것처럼 보이기 때문에 InvocationTargetException 자체의 stack trace 만으로 에러를 해결하기 어렵다.
-                // 그래서 Wrapping 한 예외 클래스이다.
-            // InstantiationException: newInstance() 메서드를 통해 인스턴스 생성 시에, 지정된 객체의 인스턴스를 생성할 수 없는 경우에 throw
-            // IllegalAccessException: 허가되지 않은 객체, 메서드, 필드 등에 접근하려 할 경우 발생
-            isNotAgreedInstance = (FirstSingletonClass) privateConstructor.newInstance();
-            
-            // 접근성을 되돌려 코드 무결성을 유지
-            privateConstructor.setAccessible(false);
-        } catch (NoSuchMethodException noSuchMethodException) {
-            // 이건 사실 추천하지 않는 방법이다.
-            // 로그에 정확한 예외 발생 위치가 노출되기 때문에 보안에 위협이 될 수 있다.
-            noSuchMethodException.printStackTrace();
-        } catch (InvocationTargetException invocationTargetException) {
-            invocationTargetException.printStackTrace();
-        } catch (InstantiationException instantiationException) {
-            instantiationException.printStackTrace();
-        } catch (IllegalAccessException illegalAccessException) {
-            illegalAccessException.printStackTrace();
-        }
-
-        System.out.println("firstSingletonClass: " + System.identityHashCode(firstSingletonClass));
-        System.out.println("isNotAgreedInstance: " + System.identityHashCode(isNotAgreedInstance));
-        System.out.println("firstSingletonClass.getString: " + firstSingletonClass.getString());
-        System.out.println("isNotAgreedInstance.getString: " + isNotAgreedInstance.getString());
-    }
-}
-
-```
-
-> 이거 실행되면 안되는데 FirstSingletonClass<br>
-> 그만큼 신나신 거지~ 무야호~<br>
-> 이거 실행되면 안되는데 FirstSingletonClass<br>
-> firstSingletonClass: 209813603<br>
-> isNotAgreedInstance: 312116338<br>
-> firstSingletonClass.getString: 무야호~<br>
-> isNotAgreedInstance.getString: null<br>
-
-<br>
-그리고 두 번째 방식은 INSTANCE 를 private 으로 선언하고 해당 객체를 호출하는 메서드를 추가한다.<br>
-하지만 해당 방법도 리플렉션에 안전하지 않은 상태이다.<br>
-<br>
-쓰레드에 안전하며 가장 효율적인 방법은 enum 을 활용하는 것이라고 한다.<br>
-
----
-
-그리고 아이템 4에서 정말 물어보고 싶은 개념이 나왔다.<br>
-<br>
-java.util.Collections 처럼 특정 인터페이스를 구현하는 객체를 생성해주는 정적 메서드 (혹은 팩터리) 를 모아놓을 수도 있다..<br>
-<br>
-이게 뭐야<br>
-동료랑 상의해도 정확한 설명을 모르겠다.<br>
-뭘까...<br>
-
-＋ @<br>
-이것도 질문 추가해야지ㅎㅎㅎ<br>
-
-## ● 아이템 5: 자원을 직접 명시하지 말고 의존 객체 주입을 사용하라
-
-만약 특정 클래스에 의존하는 멤버 변수가 있다고 해보자.<br>
-특히 책에서는 문자열 확인을 위해 바탕이 되는 참조 변수를 멤버 변수로 선언하여 예시를 든다.<br>
-<br>
-이러한 객체는 클래스 별로 직접 구현하는 방법도 있지만 여러 곳에서 각 객체 별로 구현되는 경우도 있고, 직접적으로 사용되지 않는 경우도 있기에 초기화를 하는 방식에 차등을 주어 구현하고자 한다.<br>
-바로 정적 유틸리티 클래스나 싱글턴 방식으로 구현하는 것.<br>
-하지만 이렇게 사용하는 자원에 따라 동작이 달라지는 클래스에는 <b>정적 유틸리티 클래스나 싱글턴 방식이 적합하지 않다.</b><br>
-이 보다는 인스턴스를 획득할 때 생성자에 필요한 자원을 넘겨주는 방식이 낫다.<br>
-즉, <b>DI</b> 를 활용하는 편이 낫다고 이야기 한다.<br>
-
-```java
-public class SpellChecker {
-
-    private final Lexicon dictionary;
-
-    public SpellChecker(Lexicon dictionary) {
-        this.dictionary = Objects.requireNonNull(dictionary);
-    }
-
-    ...
-}
-```
-
-이러한 패턴을 <b>의존 객체 주입 패턴</b> 이라고 한다.<br>
-토비의 스프링에서는 이를 활용한 패턴 중 하나로 <b>팩터리 메서드 패턴</b>을 이야기 하기도 했고 책에서도 짧게 설명을 한다.<br>
-특히 DI에 의한 프레임워크라고 하는 스프링에서는 굉장히 중요한 개념이 될 것이다.<br>
-<br>
-
-> 핵심 정리<br>
-><br>
-> 클래스가 내부적으로 하나 이상의 자원에 의존할 때,<br>
-> 그 자원이 클래스의 동작에 영향을 준다면 싱글턴과 정적 유틸리티 클래스는 사용하지 않는 것이 좋다.<br>
-{: .prompt-tip }
-
----
-
-## ● 아이템 6: 불필요한 객체 생성을 피하라
-
-이번 아이템에서는 deprecated 된 문법을 몇 가지 소개한다.<br>
-
-```java
-
-String s = new String("bikini");
-
-Boolean b = new Boolean(true);
-
-```
-
-우선 문자열의 경우 리터럴로 초기화된 문자열에 기반에 본인만의 저장소를 운영한다.<br>
-또, 논리 자료형의 경우 생성자 대신 Boolean.valueOf(String) 팩터리 메서드를 사용하는 것이 좋다.<br>
-그리고 생성 비용이 아주 비싼 경우도 있는데,<br>
-
-```java
-static boolean isRomanNumeral (String s) {
-    return s.matches("^...");
-}
-```
-
-우리가 java에서 문자열의 정규표현식을 활용해 테스트를 진행할 때,<br>
-자주 사용하는 것이 있는데 바로 Pattern 인스턴스이다.<br>
-문자열의 matches 를 통해 내부적으로 인스턴스를 획득하게 되는 Pattern 은 인스턴스를 획득할 때마다 <b>유한 상태 기계</b>를 만들기 때문에 인스턴스 획득의 비용이 높다.<br>
-<br>
-
-> <b>유한 상태 기계?</b><br>
-><br>
-> 특정 조건들에 의거하여 성능을 끌어올린 애플리케이션<br>
-> <br>
-> 
-> 1. 유한한 상태를 가진다.<br>
-> 2. 유한한 입력을 가진다.<br>
-> 3. 초기값을 가진다.<br>
-> 4. 입력에 따라 상태가 변화하는 상태 전이 함수가 존재한다.<br>
->
-> <br>
-> 입력 별 유한한 상태를 계산, 제한하여 이를 상수화 해놓고 애플리케이션의 성능을 끌어올리는 구현 방식을 유한 상태 기계라고 한다.<br>
-{: .prompt-tip }
-
-그렇다면 이렇게 인스턴스 획득 비용이 비싼 경우 어떤 방식이 구현하기에 좋을까?<br>
-책에서는 정적 상수형 변수로 선언, 초기화 하여 사용될 때마다 재사용 되는 것을 노렸다.<br>
-그리고 인스턴스의 획득 자체가 비싸니 정적으로 상시 올려놓는 것이 아닌 <b>지연 초기화 (Lazy Initialization)</b> 를 통해, 획득 자체를 미뤄두다가 첫 호출 시 인스턴스를 획득하게 하는 것을 제안한다.<br>
-하지만 지연 초기화는 코드를 복잡하게 만들 뿐 아니라 성능의 효율성을 크게 높이지 못 하는 경우가 많아서 추천하지 않는다.<br>
-<br>
-그래서 내가 생각한 방식은 이렇다.<br>
-클래스 주체가 본인의 변수를 확실하게 알고 있다는 문제점을 고려했다.<br>
-만약 해당 정규표현식을 비슷한 계층의 다른 서비스 로직, 도메인 에서도 활용해야 한다면, 상위 계층의 로직에서 DI 주는 방식도 고민해볼 것이다.<br>
-<br>
-또 책에서는 피해야할 안티 패턴을 몇 설명한다.<br>
-<b>오토박싱 (Auto Boxing)</b> 을 예로 들었다.<br>
-
-```java
-public static void main(String... args) {
-//    Long sum = 0L;    // takes: 5.997 sec
-    long sum = 0L;    // takes: 0.627 sec
-
-    for (long i = 0L; i < Integer.MAX_VALUE; i++) {
-        sum += i;
-    }
-}
-```
-
-위의 로직에서 Wrapper 클래스인 Long 을 사용하면 반복문의 기본 자료형으로 선언된 i와 다른 자료형으로 인해 반복문의 바디가 동작할 때마다 오토 박싱을 진행하게 된다.<br>
-그로인한 실행 시간은 내가 주석으로 남긴 부분과 같다.<br>
-정말 어마어마하게 오래걸리더라..<br>
-<br>
-
-> 아이템 6 에서 획득한 키워드<br>
-><br>
-> 어댑터 패턴: 관계가 없는 인터페이스 들을 연결하는 패턴이다.<br>
-> 두 인터페이스를 구현해야 하는 상황이라면 하나의 인터페이스는 implements 하여 구현을 강제한다. (정적 메서드로 선언한 것 제외)<br>
-> 그리고 오버라이딩 된 메서드에서 다른 인터페이스의 메서드를 호출한다.<br>
-> 이렇게 연관이 없던 두 인터페이스 간의 연결이 구현으로 인해서 이루어지는 패턴이다.<br>
-{: .prompt-tip }
-
----
-
-## ● 아이템 7: 다 쓴 객체 참조를 해제하라
-
-이번 아이템에서는 초반에 Stack 을 구현하는 코드를 보여주고 독자에게 메모리 누수가 일어날 법한 곳을 찾아보라고 한다.<br>
-당신은 단 번에 찾았는가?<br>
-<br>
-<i>난 답지 보고 알아따...</i><br>
-<br>
-책에서 Stack을 구현할 때 pop 메서드에서 제거된 객체의 참조를 그대로 두었다.<br>
-
-```java
-public Object pop() {
-    if (size == 0) {
-        throw new EmptyStackException();
-    }
-
-    // 이 부분에서 elements[--size] 에 해당하는 객체를 따로 선언, 초기화 하여 저장하고,
-    // Stack 자료형을 이루는 객체의 집합인 elements 에서 인덱스에 의한 참조를 해제해줘야 한다.
-
-    return elements[--size];
-}
-```
-
-책에서는 위의 주석 부분에서 참조를 해제해줘야 하는 구문에 한해 인덱스가 가리키는 값을 <b>null 로 처리</b> 한다.<br>
-하지만 이렇게 null 로 처리하는 일은 예외적인 경우여야 하며 다 쓴 참조를 해제하는 가장 좋은 방법은 그 참조를 담은 변수를 유효 범위 (scope) 밖으로 밀어내는 것이라고 한다.<br>
-그리고 이를 간단하게 설명하기 위해 <b>WeakHashMap</b> 을 이야기 하는데, 궁금해서 직접 구현해봤다.<br>
-
-```java
-public class MainClass {
-    
-    public static void main(String... args) {
-
-        WeakHashMap<String, String> map1 = new WeakHashMap<>();
-        Map<String, String> map2 = new HashMap<>();
-
-        String key1 = "리터럴1";                           // 이건 weak reference 의 영향을 받지 않는다.
-        String key2 = new String("new 연산자");
-        
-        map1.put(key1, "100");
-        map1.put(key2, "200");
-        
-        map2.put(key1, "100");
-        // map2.put(key2, "200");                              // 이 주석을 풀면 put으로 key2의 참조가 다시 생긴다.
-                                                            // 즉, 다른 객체에 다시 참조를 건다면 WeakHashMap 의 참조도 잃지 않고 유지된다.
-        
-        key1 = null;
-        key2 = null;
-        
-        System.gc();
-
-        System.out.println("map1: " + map1);
-        System.out.println("map2: " + map2);
-
-    }
-
-}
-```
-
-> map1: {new 연산자=200, 리터럴1=100}<br>
-> map2: {new 연산자=200, 리터럴1=100}<br>
-
-<br>
-map1에 <br>
-이렇게 출력이 된다.<br>
-이유는 <b>WeakHashMap</b> 이 <b>약한 참조 (Weak Reference)</b> 를 이용하기 때문이다.<br>
-약한 참조란 참조를 하는 <b>본인이 GC 의 대상</b>이 될 수도 있다는 것을 의미한다.<br>
-그래서 위에서 구현한 소스를 보면 WeakHashMap 인 map1에 put된 key2를 null로 하고 gc를 강제로 한 것을 보면 map1 안에서 해당 데이터가 사라진 것을 확인할 수 있다.<br>
-하지만 이는 리터럴로 선언된 String 타입의 키에서는 적용되지 않고, 본인과 같은 키 값을 강한 참조 (String Reference) 하는 객체가 있다면 null로 처리해도 약한 참조 또한 사라지지 않는다.<br>
-
----
-
-## ● 아이템 8: finalizer와 cleaner 사용을 피하라,
-## ＋ 아이템 9: try-finally 보다는 try-with-resources 를 사용하라
-
-자바에서는 객체 소멸자로 <b>finalizer</b> 와 <b>cleaner</b> 를 제공한다.<br>
-그 중 finalizer는 예측할 수 없고, 상황에 따라 위험할 수도 있으며 GC의 대상에서 우선순위도 밀린다.<br>
-저자는 실제로 finalizer를 구현한 동료가 OOM을 뱉으며 죽는 애플리케이션을 뜯어보자 finalizer로 객체 소멸을 구현하였음에도 <b>쓰레드 상 우선순위에 밀려 (이거 확인하자)</b> 수 많은 객체가 제대로 gc 되지도 못하고 서버를 터트린 이야기를 해준다.<br>
-심지어 finalizer 에서 예외가 발생하면 경고초자 출력하지 않는다.<br>
-<br>
-반면에 cleaner 는 자신을 수행할 스레드를 제어할 수 있다는 점에서 조금 낫다.<br>
-하지만 여전히 백그라운드에서 수행되고 GC의 통제하에 있으니 즉각 수행되기는 보장할 수 없다.<br>
-<br>
-그럼에도 우리가 객체 소멸자를 구현해야 하는 상황을 두 가지 설명한다.<br>
-
-1. 클라이언트가 객체 소멸 로직을 아예 구현하지 않아서 하긴 해야할 때(?)<br>
-2. <b>네이티브 피어(객체)</b> 에 대하여 객체가 소멸해야 함을 알릴 때<br>
-
-1번은.. 뭐 실수로 까먹었다고 치자.<br>
-2번은 조금 중요한 대목이다.<br>
-<br>
-<b>네이티브</b>란 키워드는 프로그래밍을 하다가 보면 자주 접할 수 있는 단어이다.<br>
-보통 <b>"다른 언어의"</b> 라는 의미를 지니며 JPA 상에서도 네이티브 쿼리를 통해 기존 JPA 문법 상 맞는 쿼리가 아닌 이용하는 DB에 맞춘 쿼리를 작성할 수 있게 하는 기능도 있었다.<br>
-이렇게 다른 언어로 작성된 객체같은 경우는 JVM의 GC가 정상적으로 자원을 회수하지 못할 가능성이 있다.<br>
-이를 해결하기 위해 <b>cleaner 를 구현하고 try-with-resources 로 회수</b>하는 것이 좋다.<br>
-
-```java
-import java.lang.ref.Cleaner;
-
-public class Office implements AutoCloseable {
-    
-    private static final Cleaner cleaner = Cleaner.create();
-    
-    // 청소가 필요한 자원, 절대 Office 를 참조해서는 안 된다.
-    private static class State implements Runnable {
-        // 쓰레기 개수
-        int numJunkPiles;
-        
-        State(int numJunkPiles) {
-            this.numJunkPiles = numJunkPiles;
-        }
-        
-        // close 메서드나 cleaner 가 호출한다.
-        @Override
-        public void run() {
-            System.out.println("사무실 청소");
-            numJunkPiles = 0;
-        }
-    }
-    
-    // 사무실의 상태, cleanable 과 공유한다.
-    private final State state;
-    
-    // cleanable 객체, 수거 대상이 되면 사무실을 청소한다.
-    private final Cleaner.Cleanable cleanable;
-    
-    public Office(int numJunkPiles) {
-        state = new State(numJunkPiles);
-        cleanable = cleaner.register(this, state);
-    }
-    
-    @Override
-    public void close() {
-        System.out.println("close()");
-        cleanable.clean();
-    }
-}
-
-...
-
-public static void main(String... args) {
-    
-    try(Office office = new Office(10)) {
-        System.out.println("office.toString(): " + office.toString());
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-
-    System.out.println("--------------------------------------------");
-    
-    // 일반 try-catch 를 이용하면 Runnable 을 구현한 state 의 run 이 동작하지 않는다.
-    // 이는 AutoCloseable 를 구현한 취지에 맞지 않는 행동이기 때문이다.
-    Office office = new Office(10);
-    
-    try {
-        System.out.println("office.toString(): " + office.toString());
-    } catch (Exception e) {
-        e.printStackTrace();
-    } finally {
-        office.close();
-    }
-}
-```
-
-> office.toString(): item8finalizeAndCleaner.Office@2ff4f00f<br>
-> close()<br>
-> 사무실 청소<br>
-> --------------------------------------------<br>
-> office.toString(): item8finalizeAndCleaner.Office@7d417077<br>
-> close()<br>
-> 사무실 청소<br>
-
-<br>
-<b>와, 또 신기한 사실을 알아냈다.</b><br>
-위의 코드는 책에서 설명한 cleaner를 구현한 클래스이고 이를 활성화하기 위해 try-with-resources 를 구현한 메인 메서드 이다.<br>
-위 코드는 자바 11 환경에서 구현했던 코드였다.(사무실에서 짬이 날 때 작성한 코드이다.)<br>
-<b>자바 11</b>에서는 AutoCloseable, Runnable 로 구현된 <b>run 메서드가 분명 동작하지 않았었다.</b><br>
-이를 위해 구현된 소스임을 분명 확인하고 내가 직접 구현했으니 기억한다.<br>
-하지만 이 포스팅을 위해 다시 소스를 실행한 후 깜짝 놀랐다.<br>
-<b>자바 17 에서는 AutoCloseable, Runnable 로 구현한 run 메서드도 동작한다.</b><br>
-이게 무슨 일인가<br>
-jdk 버전 별로 차이가 많을 수 있다는 것은 알지만 최적화가 이렇게 이루어질 수도 있구나<br>
-아이템 8과 9는 내가 다루기에 아직 지식이 모자른 것 같다.<br>
-우선 jdk 11과 비교해가며 포스트를 수정해야 할것 같다.<br>
-
-<b>＋ @</b><br>
-집에서 확인하니 jdk 11도 run 메서드가 동작하는 것을 알 수 있다.<br>
-jdk 8과 비교해보자.<br>
-<i>추가: 2023-08-15 08:54</i><br>
-<br>
-<b>＋ @</b><br>
-집에서 확인하니 jdk 11도 run 메서드가 동작하는 것을 알 수 있다.<br>
-jdk 8과 비교해보자.<br>
-<i>추가: 2023-08-15 08:56</i><br>
-<br>
-<b>＋ @</b><br>
-Cleaner 클래스는 자바 9 부터 추가되었다..<br>
-도대체 사무실에서는 동작하지 않았던 run 메서드가 왜 동작하는 걸까..<br>
-이게 스레드에서 우선순위로 탈락한 걸까..<br>
-<i>추가: 2023-08-15 08:58</i><br>
-<br>
-
-> 아이템 8 에서 획득한 키워드<br> 
-> <br>
-> System.runFinalizersOnExit, Runtime.runFinalizersOnExit?<br>
-> 위 두 메서드는 수집 대상 인스턴스의 finalize 를 동작시킨다.<br>
-> 하지만 스레드에 안전하지 않아 다른 객체에서 동시에 수집 대상 인스턴스를 참조하기 시작하면 교착이 발생할 수 있다.<br>
-{: .prompt-tip }
-
----
-
-## ● TIL
-
-우선, 한번에 아이템 9개 정리하는건 너무 힘들다.<br>
-단순 코딩도 아니고 이론과 키워드로 꽉찬 책이다.<br>
-그래도 재밌긴 하니 분량을 정해놓고 마음 편히 정리하는게 앞으로 좋을 것 같다.<br>
-<br>
-그리고 저 Cleaner는 도대체 왜 특정 환경에서 동작하지 않은건지 너무 궁금하다.<br>
-예상에는 스레드 상 우선순위 탈락인데..<br>
-다른 프로젝트도 실행되어 있는 것이 Cleaner 가 구현된 클래스가 GC 의 대상이 되는데 영향이 있던걸까..<br>
