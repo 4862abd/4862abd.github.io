@@ -918,5 +918,20 @@ public interface Comparable<T> {
 <br>
 우선 compareTo 덕분에 자동 정렬되는 컬렉션 관리도 쉽게 할 수 있다고 한다.<br>
 그건 String 이 Comparable 을 구현한 덕분이라고 하는데 이건 조금 더 확인해야 할 것 같다.<br>
+<br>
+compareTo 의 중요 규약을 살펴보자.<br>
+<br>
 
+1. 두 객체 참조의 순서를 바꿔 비교해도 예상한 결과가 나와야한다.<br>
+2. 첫 번째가 두 번째 보다 크고 두 번째가 세 번째보다 크면, 첫 번째는 세 번째보다 커야한다.<br>
+3. 크기가 같은 객체들끼리 어떤 객체와 비교하더라도 항상 같아야한다.<br>
 
+<br>
+어디선가 본 규약들 같다.<br>
+<b>compareTo 의 규약</b>은 <b>equals 의 규약</b>과 <b style="color: blue;">흡사</b>하다.<br>
+<b>대칭성, 추이성, 반사성을 만족 해야한다</b>는 것이다.<br>
+이 규약을 잘 지켜 compareTo 를 구현하게 되면 equals 의 동치성 비교와 같은 결과가 나오게 된다.<br>
+<br>
+그렇다면 compareTo 를 구현하는 이유는 무엇일까?<br>
+<b>Collection</b> 들은 동치성을 비교할 때 <b>equals 대신 compareTo를 사용</b>하기 때문이다.<br>
+담당하는 역할이 정렬이니 동치성 비교인 equals 만큼 중요한 문제는 아니겠지만 주의해야 한다.<br>
