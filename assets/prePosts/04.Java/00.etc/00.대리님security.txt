@@ -1,0 +1,62 @@
+@Component
+@RequiredArgsConstructor
+public class SecurityAuthenticationConfigurer implements SecurityConfigurer {
+
+    private final String loginPageUrl = "/login";
+    private final String logoutUrl = "/logout";
+
+    private final SecurityAuthenticationProvider authenticationProvider;
+    private final SecurityAuthenticationFailureHandler authenticationFailureHandler;
+
+    @Override
+    public void config(HttpSecurity http) throws Exception {
+        disableConfig(http);
+        loginConfig(http);
+        logoutConfig(http);
+        sessionConfig(http);
+
+        http.securityContext(securityContext -> securityContext.securityContextRepository(new HttpSessionSecurityContextRepository()));
+    }
+
+    private void disableConfig(HttpSecurity http) throws Exception {
+        http
+                .httpBasic(HttpBasicConfigurer::disable)
+                .csrf(CsrfConfigurer::disable)
+                .rememberMe(RememberMeConfigurer::disable)
+                .cors(CorsConfigurer::disable);
+    }
+
+    private void loginConfig(HttpSecurity http) throws Exception {
+        http.authenticationProvider(authenticationProvider);
+
+        http.formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
+                .loginPage(loginPageUrl)
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/")
+                .failureHandler(authenticationFailureHandler)
+        );
+    }
+
+    private void logoutConfig(HttpSecurity http) throws Exception {
+        ClearSiteDataHeaderWriter headerWriter = new ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.COOKIES);
+        HeaderWriterLogoutHandler logoutHandler = new HeaderWriterLogoutHandler(headerWriter);
+
+        http.logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
+                .logoutUrl(logoutUrl)
+                .logoutSuccessUrl(loginPageUrl)
+                .addLogoutHandler(logoutHandler));
+    }
+
+    private void sessionConfig(HttpSecurity http) throws Exception {
+        http.sessionManagement(configurer -> configurer
+                .sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::changeSessionId)
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .invalidSessionUrl(loginPageUrl)
+                .maximumSessions(-1)
+                .maxSessionsPreventsLogin(false)
+                .expiredUrl(loginPageUrl)
+        );
+    }
+
+}
