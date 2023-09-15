@@ -30,10 +30,9 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 그래도 이제는 뼈대를 잡은 것 같다.<br>
 <br>
 그리고 ErdCloud 정말 불편하다.<br>
-
 <br>
-
----
+<i style="font-size: 5px;">지금 Git 블로그 이미지 업로드가 또 안된다;;; 진짜..</i>
+<br>
 
 ---
 
