@@ -46,7 +46,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 <br>
 
-![01](/assets/img/04.java/00.etc/06.toy-project-Snack/01.png)
+![01](/assets/img/04.java/00.etc/06.toy-project-Snack/01.jpg)
 
 ---
 
@@ -54,7 +54,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 <br>
 
-![02](/assets/img/04.java/00.etc/06.toy-project-Snack/02.png)
+![02](/assets/img/04.java/00.etc/06.toy-project-Snack/02.jpg)
 
 ---
 
@@ -64,7 +64,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 <br>
 
-![03](/assets/img/04.java/00.etc/06.toy-project-Snack/03.png)
+![03](/assets/img/04.java/00.etc/06.toy-project-Snack/03.jpg)
 
 ---
 
@@ -74,7 +74,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 <br>
 
-![04](/assets/img/04.java/00.etc/06.toy-project-Snack/04.png)
+![04](/assets/img/04.java/00.etc/06.toy-project-Snack/04.jpg)
 
 <br>
 
