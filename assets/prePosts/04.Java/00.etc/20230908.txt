@@ -1,0 +1,55 @@
+package config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
+
+/**
+ * @EnableWebSecurity
+ * @see "보통 @Configuration 애너테이션과 함께 사용된다.
+ * 이유는 @EnableWebSecurity 애너테이션을 통해 스프링 시큐리티 설정에 필요한 스프링 시큐리티 필터 체인을 자동으로 생성한다.
+ * 또한 HttpSecurity 를 자동으로 스프링 빈으로 등록해 주어 스프링 시큐리티 설정을 위한 메서드를 구현할 수 있게 도와준다.
+ * 이 애너테이션을 사용하지 않고 스프링 시큐리티를 설정하는 방법이 있는데 그 전까지는 추상 클래스인 WebSecurityConfigurerAdapter 를 상속하여 구현했다.
+ * 하지만 현재는 Deprecated 이며, jdk 17 부터는 아예 제거되었다. -> jdk 17 이 아닌, Spring Security 5.7.0-M2 부터 Deprecated 되었다.
+ * WebSecurityConfigurerAdapter 추상 클래스를 대체하기 위한 권장 방법이 필터 체인이며 이를 도와주는 것이 @EnableWebSecurity 애너테이션이다.
+ * 
+ * https://jjangadadcodingdiary.tistory.com/entry/%EC%8A%A4%ED%94%84%EB%A7%81-%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0%EC%97%90%EC%84%9C-EnableWebSecurity-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98%EC%9D%98-%ED%99%9C%EC%9A%A9-%EB%B0%A9%EB%B2%95%EA%B3%BC-%EA%B8%B0%EB%8A%A5
+ * 
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ * 
+ * @EnableWebSecurity 애너테이션을 통해 스프링 시큐리티 필터가 스프링 필터체인에 등록이 된다.
+ * 
+ * 
+ * https://velog.io/@shon5544/Spring-Security-1.-%EC%84%A4%EC%A0%95
+ * 
+ * "
+ */
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests((authorizationManagerRequestMatcherRegistry -> {
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/api/**").authenticated();
+                    
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/swagger-ui/**").permitAll();
+
+                    authorizationManagerRequestMatcherRegistry.anyRequest().permitAll();
+                    
+                }))
+                .formLogin((httpSecurityFormLoginConfigurer -> {
+                    httpSecurityFormLoginConfigurer.loginPage("/swagger-ui");
+                }))
+                .build();
+    }
+
+}
