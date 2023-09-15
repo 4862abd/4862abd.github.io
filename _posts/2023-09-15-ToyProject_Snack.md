@@ -1,7 +1,7 @@
 ---
-title: 토이프로젝트, Snack - 구상 단계
+title: 토이프로젝트, Snack 구상 단계
 author: park
-date: 2023-09-15 18:20:00 +0800
+date: 2023-09-15 18:40:00 +0800
 categories: [Java, 토이 프로젝트]
 tags: [typography]
 math: true
@@ -77,6 +77,3 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 ![04](/assets/img/04.java/02.toyProjectSnack/04.jpg)<br>
 
 <br>
-
-<br>
-

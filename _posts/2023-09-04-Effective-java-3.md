@@ -1,5 +1,5 @@
 ---
-title: 3장, 모든 객체의 공통 메서드 - 작성중
+title: 3장, 모든 객체의 공통 메서드
 author: park
 date: 2023-09-04 18:20:00 +0800
 categories: [Java, Effective Java]
