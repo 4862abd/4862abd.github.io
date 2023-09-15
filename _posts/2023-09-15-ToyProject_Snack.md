@@ -2,7 +2,7 @@
 title: 토이프로젝트, Snack - 구상 단계
 author: park
 date: 2023-09-15 18:20:00 +0800
-categories: [TIL, 2023-09]
+categories: [Java, 토이 프로젝트]
 tags: [typography]
 math: true
 mermaid: true
@@ -46,7 +46,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 <br>
 
-![01](/assets/img/04.java/00.etc/06.toy-project-Snack/01.jpg)
+![01](/assets/img/04.java/00.etc/06.toy-project-Snack/01.jpg)<br>
 
 ---
 
@@ -54,7 +54,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 <br>
 
-![02](/assets/img/04.java/00.etc/06.toy-project-Snack/02.jpg)
+![02](/assets/img/04.java/00.etc/06.toy-project-Snack/02.jpg)<br>
 
 ---
 
@@ -64,7 +64,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 <br>
 
-![03](/assets/img/04.java/00.etc/06.toy-project-Snack/03.jpg)
+![03](/assets/img/04.java/00.etc/06.toy-project-Snack/03.jpg)<br>
 
 ---
 
@@ -74,7 +74,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 <br>
 
-![04](/assets/img/04.java/00.etc/06.toy-project-Snack/04.jpg)
+![04](/assets/img/04.java/00.etc/06.toy-project-Snack/04.jpg)<br>
 
 <br>
 
