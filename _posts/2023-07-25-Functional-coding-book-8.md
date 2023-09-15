@@ -75,7 +75,7 @@ function freeTieClip(cart) {
 그림으로 표현하면 이러하다.<br>
 <br>
 
-![01](/assets/img/05.Functional-coding/08/01.PNG)
+![01](/assets/img/05.Functional-coding/08/01.png)
 <br>
 
 이러한 이유는 함수에 종속되어 이 함수를 호출해야만 사용할 수 있는 반복문, index 값과<br>

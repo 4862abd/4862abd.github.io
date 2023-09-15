@@ -33,7 +33,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 ### 예시 케이스 1: 시계 할인하기
 
-![04](/assets/img/05.Functional-coding/09/04.PNG)
+![04](/assets/img/05.Functional-coding/09/04.png)
 
 <br/>
 마케팅 담당자가 이번에 새로운 마케팅 전략을 가져왔다.<br/>
@@ -44,7 +44,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 이를 위해 할인해주는 코드를 추가하려 하는데 이를 구현하기에 앞서 두 가지 방법을 설명한다.<br/>
 <br/>
 
-![05](/assets/img/05.Functional-coding/09/05.PNG)
+![05](/assets/img/05.Functional-coding/09/05.png)
 
 #### 방법 1: 추상화 벽에 만들기
 

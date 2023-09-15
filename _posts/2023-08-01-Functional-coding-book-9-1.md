@@ -47,7 +47,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 ![01](/assets/img/05.Functional-coding/09/01.png)
 
-![02](/assets/img/05.Functional-coding/09/02.PNG)
+![02](/assets/img/05.Functional-coding/09/02.png)
 
 
 이 책에서 추상화를 설명하는 개념이 재미있었다.<br/>
@@ -62,7 +62,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 ---
 <br/>
 
-![03](/assets/img/05.Functional-coding/09/03.PNG)
+![03](/assets/img/05.Functional-coding/09/03.png)
 
 <br/>
 위의 그림을 보면 조금 더 쉽게 이해할 수 있다.<br/>
