@@ -1,5 +1,5 @@
 ---
-title: 토이프로젝트, Snack 구상 단계
+title: Snack 구상 단계
 author: park
 date: 2023-09-15 18:40:00 +0800
 categories: [Java, 토이 프로젝트]
@@ -46,7 +46,8 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 <br>
 
 
-![01](/assets/img/04.java/02.toyProjectSnack/01.jpg)<br>
+![01](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/85da67a1-86e2-43dd-b970-35e535748be0)
+<!-- ![01](/assets/img/04.java/02.toyProjectSnack/01.jpg)<br> -->
 
 
 ---
@@ -56,7 +57,8 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 <br>
 
 
-![02](/assets/img/04.java/02.toyProjectSnack/02.jpg)<br>
+![02](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/c50f6530-9084-4b4e-add4-ce3b41a53205)
+<!-- ![02](/assets/img/04.java/02.toyProjectSnack/02.jpg)<br> -->
 
 
 ---
@@ -68,7 +70,8 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 <br>
 
 
-![03](/assets/img/04.java/02.toyProjectSnack/03.jpg)<br>
+![03](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/302a0184-ae90-4aea-a067-453356cb1e99)
+<!-- ![03](/assets/img/04.java/02.toyProjectSnack/03.jpg)<br> -->
 
 
 ---
@@ -80,7 +83,8 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 <br>
 
 
-![04](/assets/img/04.java/02.toyProjectSnack/04.jpg)<br>
+![04](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/cc8f6b2b-563d-415d-a7e1-42f220cf287b)
+<!-- ![04](/assets/img/04.java/02.toyProjectSnack/04.jpg)<br> -->
 
 
 <br>
