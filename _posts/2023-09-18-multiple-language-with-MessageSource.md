@@ -1,5 +1,5 @@
 ---
-title: 2023-09-18 Spring-boot MessageSource 로 다국어 구현하기
+title: Spring-boot MessageSource 로 다국어 구현하기
 author: park
 date: 2023-09-18 18:20:00 +0800
 categories: [TIL, 2023-09]
@@ -32,7 +32,9 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 진행하는 Snack 구독 서비스 애플리케이션의 구현을 진행 중, 내가 예외 메세지를 이렇게 남기고 진행했었다.<br>
 <br>
 
-![01](/assets/img/04.java/03.multiple-language/01.jpg)<br>
+<!-- ![01](/assets/img/04.java/03.multiple-language/01.jpg)<br> -->
+
+![01](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/1619331a-86f7-4165-9ec5-c5e41800dfc5)
 
 우선 메세지가 그대로 노출된다.<br>
 마치 Javascript 의<br>
@@ -147,35 +149,44 @@ ko_KR.UTF-8, en_US.UTF-8<br>
         Mac OS 환경이라면 구글에 "Mac 개발자 도구 열기" 라고 치면 잘 나온다.<br>
         개발자 도구를 한 번도 이용하지 않은 사람이라면 언어 설정이 default 로 영어로 잡혀 있을 수 있다.<br>
         그 점은 작성자가 보여주는 사진과 다를 수 있는 점, 인지해야한다.<br>
-        <img src="/assets/img/04.java/03.multiple-language/03.jpg" />
+        <!-- <img src="/assets/img/04.java/03.multiple-language/03.jpg" /> -->
+        <img src="https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/3832fd83-9598-49b6-9be8-97e1367b2b53" />
 <br>
 <br>
 <hr>
         2. 개발자 도구 상단의 탭 중에서 <b>"네트워크" 를 클릭</b> 한다.<br>
         처음 네트워크에 들어가면 기록을 남기지 않아서 빈 창이 뜰 것이다.<br>
         그 상태로 새로고침 하여 출력되는 목록을 확인하자.<br>
-        <img src="/assets/img/04.java/03.multiple-language/04.jpg" />
+        <!-- <img src="/assets/img/04.java/03.multiple-language/04.jpg" />
         <img src="/assets/img/04.java/03.multiple-language/05.jpg" />
-        <img src="/assets/img/04.java/03.multiple-language/06.jpg" />
+        <img src="/assets/img/04.java/03.multiple-language/06.jpg" /> -->
+        <img src="https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/a1b40bd3-2361-4aad-a162-ef785bc81aff" />
+        <img src="https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/df793c12-2f58-4d66-a6b8-469fd93e063b" />
+        <img src="https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/ff5a61b7-0be6-41b5-b572-6e6b94c9408c" />
 <br>
 <br>
 <hr>
         3. 이름을 보면 <b>Http 메서드를 사용한 url</b> 이 눈에 띌 것이다.<br>
         눌러서 요청헤더를 확인하자.<br>
         특히 페이지가 그려지기 위해 서버와 통신을 하는 페이지의 경우 Get 메서드를 이용하는 경우가 많은데, 이런 점을 알고 넘어가는 것도 중요하다.<br>
-        <img src="/assets/img/04.java/03.multiple-language/07.jpg" />
+        <!-- <img src="/assets/img/04.java/03.multiple-language/07.jpg" /> -->
+        <img src="https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/01c55f21-247e-457b-9a15-cb1d3975885c" />
 <br>
 <br>
 <hr>
         4. 사이트탭의 헤더 탭에서 쭉 내리면 <b>요청 헤더에 "Accept-Language" 와 "Content-Type"</b> 이 보일 것이다.<br>
         그 값을 확인해보면 한글로 설정한 크롬의 경우 default 인 "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7" 로 되어 있을 것이다.<br>
         언어별 우선 순위를 둔 것이고, 현재 한국어가 가장 먼저 그려지게 헤더가 설정되어 있다.<br>
-        <img src="/assets/img/04.java/03.multiple-language/08.jpg" />
+        <!-- <img src="/assets/img/04.java/03.multiple-language/08.jpg" /> -->
+        <img src="https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/4a6e447b-2237-4570-becd-da5697d24f1a" />
 <br>
 <br>
         5. "Accept-Language" 의 언어 설정은 크롬의 설정 - 언어 탭에서 변경 가능하다.<br>
 <br>
 </details>
+
+<br>
+<br>
 
 ---
 
@@ -314,4 +325,5 @@ File Encodings 에서 <br>
 설정이 변경되면 본인이 등록한 문자열들이 전부 <b style="color: red;">물음표로 변할 수 있다.</b><br>
 <br>
 
-![09](/assets/img/04.java/03.multiple-language/09.jpg)<br>
+<!-- ![09](/assets/img/04.java/03.multiple-language/09.jpg)<br> -->
+![09](https://github.com/cotes2020/jekyll-theme-chirpy/assets/77370682/eec4479a-efbe-4c5e-a66c-9bc7f0b82ae3)
