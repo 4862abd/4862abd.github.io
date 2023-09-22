@@ -1,7 +1,7 @@
 ---
-title: HandlerInterceptor, HandlerInterceptorAdaptor - 작성중
+title: HandlerInterceptor, HandlerInterceptorAdapter
 author: park
-date: 2023-09-21 18:03:00 +0800
+date: 2023-09-22 15:03:00 +0800
 categories: [TIL, 2023-09]
 tags: [typography]
 math: true
@@ -13,12 +13,13 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 
 <br>
 
-## HandlerInterceptor, HandlerInterceptorAdaptor 의 차이
+## HandlerInterceptor, HandlerInterceptorAdapter 의 차이
 
 <br>
 ● Filter, Interceptor, AOP<br>
-● HandlerInterceptor, HandlerInterceptorAdaptor 의 차이<br>
+● HandlerInterceptor, HandlerInterceptorAdapter 의 차이<br>
 ● HandlerInterceptor<br>
+● 내 호기심<br>
 <br>
 
 ---
@@ -52,11 +53,11 @@ Interceptor 는 언제 동작하고, 어떤 자원을 이용할 수 있을까?<b
 
 <br>
 
-## ● HandlerInterceptor, HandlerInterceptorAdaptor 의 차이
+## ● HandlerInterceptor, HandlerInterceptorAdapter 의 차이
 
 <br>
-우선 HandlerInterceptor 는 <b>인터페이스</b> 이고 HandlerInterceptor<b>Adaptor 는 클래스</b>이다.<br>
-여러 다른 포스팅을 보면 클래스인 HandlerInterceptorAdaptor 를 상속 받아 구현 하는 것이 인터페이스인 HandlerInterceptor 를 구현할 때,<br>
+우선 HandlerInterceptor 는 <b>인터페이스</b> 이고 HandlerInterceptor<b>Adapter 는 클래스</b>이다.<br>
+여러 다른 포스팅을 보면 클래스인 HandlerInterceptorAdapter 를 상속 받아 구현 하는 것이 인터페이스인 HandlerInterceptor 를 구현할 때,<br>
 모든 메서드를 오버라이딩 하지 않아도 되서 좋다고 한다.<br>
 <br>
 하지만 jdk 8 이후로 인터페이스의 정의된 메서드에 <b>default 와 static 예약어</b>를 이용할 수 있다.<br>
@@ -92,7 +93,7 @@ public interface HandlerInterceptor {
 
 <br>
 확연히 다르다는 것을 알수 있다.<br>
-그로인해 구현하기 편해서 사용했던 HandlerInterceptor<b><span style="color: red;">Adaptor</span> 는 최근 버전에선 deprecated 된 상태</b>이다.<br>
+그로인해 구현하기 편해서 사용했던 HandlerInterceptor<b><span style="color: red;">Adapter</span> 는 최근 버전에선 deprecated 된 상태</b>이다.<br>
 언제 사라져도 이상하지 않다는 말이다.<br>
 <br>
 즉, 우리가 일부러 다운 그레이드를 하지 않는 이상<br>
@@ -126,18 +127,18 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("☆ 홍박사님을 아세요?");
+        System.out.println("preHandle");
         return true;
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        System.out.println("☆ 빠밥바 밥바");
+        System.out.println("postHandle");
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        System.out.println("☆ 몰라 임마");
+        System.out.println("afterCompletion");
     }
 }
 
@@ -194,9 +195,79 @@ addPathPatterns 메서드에 등록하는 패턴은 <b>Ant Pattern</b> 을 통�
 
 > 출력<br>
 > <br>
-> ☆ 홍박사님을 아세요?<br>
-> ☆ 빠밥바 밥바<br>
-> ☆ 몰라 임마<br>
+> preHandle<br>
+> postHandle<br>
+> afterCompletion<br>
 
 <br>
 이렇게 순서대로 출력되는 것을 확인할 수 있다.<br>
+<br>
+
+---
+
+<br>
+
+## ● 내 호기심
+
+<br>
+그렇다면 HandlerInterceptor 와 HandlerInterceptor 를 구현한 HandlerInterceptor<b>Adapter</b> 를<br>
+<b>모두 구현해서 인터셉터로 등록하면 어떻게 될까?</b><br>
+<br>
+
+```java
+
+// LoginInterceptor
+public class LoginInterceptor implements HandlerInterceptor {
+
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("preHandle by Interceptor");
+        return true;
+    }
+
+}
+
+...
+
+// LoginInterceptorAdapter
+public class LoginInterceptorAdapter extends HandlerInterceptorAdapter {
+    
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("preHandle by Interceptor adapter");
+        return true;
+    }
+}
+
+...
+
+// WebConfiguration
+@Configuration
+public class WebConfiguration implements WebMvcConfigurer {
+    
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoginInterceptor())
+                .addPathPatterns("/**");
+        
+        registry.addInterceptor(new LoginInterceptorAdapter())
+                .addPathPatterns("/**");
+    }
+}
+
+```
+
+<br>
+우선 애플리케이션 구동은 된다.<br>
+그리고 API 를 호출하면<br>
+<br>
+
+> 출력<br>
+> <br>
+> ☆ 홍박사님을 아세요?<br>
+> ☆ 뭐가 먼저 돌아?<br>
+
+<br>
+<b>나중에 인터셉터로 등록된 인스턴스의 메서드가 더 늦게 돈다.</b><br>
+재밌다.<br>
