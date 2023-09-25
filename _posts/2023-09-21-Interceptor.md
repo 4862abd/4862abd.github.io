@@ -265,8 +265,8 @@ public class WebConfiguration implements WebMvcConfigurer {
 
 > 출력<br>
 > <br>
-> ☆ 홍박사님을 아세요?<br>
-> ☆ 뭐가 먼저 돌아?<br>
+> preHandle by Interceptor<br>
+> preHandle by Interceptor adapter?<br>
 
 <br>
 <b>나중에 인터셉터로 등록된 인스턴스의 메서드가 더 늦게 돈다.</b><br>
