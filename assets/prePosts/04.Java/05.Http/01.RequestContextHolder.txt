@@ -1,0 +1,32 @@
+RequestContextHolder 는 Spring 에서 전역으로 Request 에 대한 정보를 가져오고자 할 때 사용하는 유틸성 클래스이다.
+
+(공식 API 문서)[https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/context/request/RequestContextHolder.html]
+
+호출 마다 request 의 정보를 매개변수로 넘기기 애매할 때 주로 사용된다.
+
+RequestContextHolder.getRequestAttributes()
+메서드를 통해 같은 Request Thread 범위의 요청정보를 얻어낼 수 있다.
+
+RequestContextHolder.currentRequestAttributes()
+메서드를 통해 null 체크를 진행할 수 있다.
+null 이 아니라면 반환하는 request 인스턴스는 같다.
+
+실제로 request 정보가 필요한 곳에서 사용하기 위해 사용되는 ContextHolder 라고 할 수 있겠다.
+
+갑자기 이 RequestContextHolder 가 언제 인스턴스를 획득하는지 궁금했다.
+
+
+
+> 이를 통해 신입 당시 현업에서 Servive Layer 에서 request 정보를 받아서 사용한 적이 있는데, 절대 좋은 코드라고 볼 수는 없었을 것 같다.
+> 관심사가 전혀 다른 도메인에서 request 정보가 필요하다는 이유로 직접 인스턴스를 획득한 점과, 인스턴스를 직접 얻어 정보를 막 가져다 사용했던 것이 문제였다.
+> 이 코드는 추후 관심사를 분리하여 리팩터링 했었다.
+
+
+
+
+지금 이 주제를 다루는 이유는 현업에서 Audit 을 관리하는 클래스의 로그인 정보 기록 코드에서 착안해서 조사해보다가 시작했다.
+코드를 확인하다 보면 선임 개발자의 많은 고민이 들어간 것을 확인할 수 있다.
+
+
+https://gompangs.tistory.com/entry/Spring-RequestContextHolder
+https://velog.io/@cjh8746/%EC%8A%A4%ED%94%84%EB%A7%81-MVC-%EC%A7%81%EC%A0%91-%EA%B9%8C%EB%B3%B4%EA%B8%B0-2%ED%83%84-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EC%83%88%EB%A1%AD%EA%B2%8C-%EB%8A%90%EB%82%80-%EA%B2%83%EB%93%A4
