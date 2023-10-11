@@ -2,7 +2,7 @@
 title: Spring-boot MessageSource 로 다국어 구현하기
 author: park
 date: 2023-09-18 18:20:00 +0800
-categories: [TIL, 2023-09]
+categories: [Java, Programming]
 tags: [typography]
 math: true
 mermaid: true

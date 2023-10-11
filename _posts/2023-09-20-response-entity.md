@@ -2,7 +2,7 @@
 title: ResponseEntity 란? ResponseEntity.ok?
 author: park
 date: 2023-09-20 18:03:00 +0800
-categories: [TIL, 2023-09]
+categories: [Java, Programming]
 tags: [typography]
 math: true
 mermaid: true

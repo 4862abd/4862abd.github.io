@@ -2,7 +2,7 @@
 title: HandlerInterceptor, HandlerInterceptorAdapter
 author: park
 date: 2023-09-22 15:03:00 +0800
-categories: [TIL, 2023-09]
+categories: [Java, Programming]
 tags: [typography]
 math: true
 mermaid: true

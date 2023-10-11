@@ -2,7 +2,7 @@
 title: new URL 와 URL.create 의 차이점
 author: park
 date: 2023-09-20 10:34:00 +0800
-categories: [TIL, 2023-09]
+categories: [Java, Programming]
 tags: [typography]
 math: true
 mermaid: true
