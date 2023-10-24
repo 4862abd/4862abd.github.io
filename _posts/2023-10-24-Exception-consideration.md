@@ -1,7 +1,7 @@
 ---
 title: 예외처리에 관한 고찰 - 1
 author: park
-date: 2023-10-24 17:40:51 +0800
+date: 2023-10-24 18:18:39 +0800
 categories: [Java, Programming]
 tags: [typography]
 math: true
