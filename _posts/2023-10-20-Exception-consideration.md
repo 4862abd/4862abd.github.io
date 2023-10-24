@@ -20,6 +20,7 @@ published: true # 포스팅 개시할 때, 바로 반영되는 옵션
 ● 목적<br>
 ● 1. 어드바이저를 통한 예외처리의 편리함<br>
 ● 2. 예외 결과를 반환할 DTO<br>
+● 3. 그러면 스프링이 제공하는 다른 예외들은?<br>
 <br>
 
 ---
@@ -283,6 +284,70 @@ public class ExceptionResult {
 <b>ResponseEntity 클래스는 Http 의 반환 상태를 관리할 수 있다.</b><br>
 즉, 내가 억지로 규칙들을 어겨가며 예외코드를 관리하려 하지 않아도 되는 것이다.<br>
 오히려 클라이언트에 전달할 메세지만 깔끔하게 전달할 수 있었다.<br>
+
+<br>
+
+---
+
+<br>
+
+### ● 3. 그러면 스프링이 제공하는 다른 예외들은?
+
+<br>
+예시를 들어, Spring 에는 Validation 을 구현할 수 있게 해주는 Spring validation 이 존재한다.<br>
+그리고 @Min 등에 의해 우리는 받아온 값에 의한 예외처리를 해준다.<br>
+그때 반환하는 예외에는 <b>ConstraintViolationException, MethodArgumentNotValidException 등이</b> 있다.<br>
+<br>
+하지만 이 예외들은 내가 피하고자 했던 상황을 이용한다.<br>
+일반적인 Exception 이 관리하는 <b>message 말고도 본인이 가진 상태가 더 있다는 것이다.</b><br>
+<br>
+
+```java
+
+// ConstraintViolationException
+public class ConstraintViolationException extends ValidationException {
+
+	private final Set<ConstraintViolation<?>> constraintViolations;
+
+    // 이하 소스 생략
+
+}
+
+// MethodArgumentNotValidException
+public class MethodArgumentNotValidException extends BindException {
+
+	private final MethodParameter parameter;
+
+    // 이하 소스 생략
+
+}
+
+
+
+```
+
+<br>
+소스를 봐도 그러하다.<br>
+본인들이 상속하는 예외들은 거의 그런 형태를 띄지 않는다.<br>
+하지만 우리가 접하는 예외들은 본인이 가진 상태가 더 있으며 정보를 더 제공한다.<br>
+<br>
+하지만 여기에는 짧게 생각하면 안 되는 <b>Trade-off</b> 가 존재했다.<br>
+물론 본인들이 상속하는 예외의 끝에는 Exception 과  Throwable 이 존재한다.<br>
+추가적인 상태를 관리하면 리스코프 치환법칙에 어긋날 수 있다는 이야기 이지만, 그들은 그렇게 했다.<br>
+<br>
+여기서 제일 중요한 포인트는, <b>"본인들의 상태를 직접 관리하지 않는다."</b> 에 있다.<br>
+본인들은 DI 받은 매개변수만을 이용할 뿐, 본인의 상태를 직접 관리하지 않는다.<br>
+기껏해야 Type 이 Set 인 final 로 관리되는 인스턴스 변수를 HashSet 으로 초기화해주는 데에 그친다.<br>
+또한 상위 클래스에서 필요할 message 등도 본인이 관리하는 매개변수에 할당하기 위해 받은 같은 파라미터를 통해 할당한다.<br>
+상태는 추가했지만 어느정도 관리는 되는 것이다.<br>
+<br>
+이와같은 <b>Trade-off</b> 를 통해 우리는 더 많은 정보를 얻을 수 있을 뿐 아니라 해당 예외의 인스턴스를 획득하는 로직에서도 다양한 반환 결과를 구현할 수 있게 되었다.<br>
+물론 스프링이 제공하는 모든 예외가 그렇진 않을 것이다.<br>
+Timestamp 처럼 어딘가 오류가 있는 것도 있을 것이다.<br>
+그런것도 천천히 알아가자.<br>
+<br>
+아직 공부할 것이 많다.<br>
+
 
 
 <br>
